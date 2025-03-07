@@ -6,5 +6,5 @@ from GUTors_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('rango/', include('GUTors.urls'))
+    path('rango/', include('GUTors_app.urls')),
 ]
