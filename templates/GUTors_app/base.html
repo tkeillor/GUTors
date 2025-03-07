@@ -15,6 +15,10 @@
     <body>
         <div>
         {% block body_block %}
+        <li><a href="{% url 'GUTors:home' %}">Homepage</a></li>
+        <li><a href="{% url 'GUTors:login' %}">Login</a></li>
+
+
         {% endblock %}
         </div>
         <div>

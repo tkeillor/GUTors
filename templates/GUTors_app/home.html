@@ -1,4 +1,4 @@
-{% extends 'GUTors/base.html' %}
+{% extends 'GUTors_app/base.html' %}
 
 {% load staticfiles %}
 
@@ -10,4 +10,10 @@ GUTors Homepage
     <h1>Welcome</h1>
     <div>
         To our tutoring page for Glasgow University Students!
-        
+    </div>
+
+    <div>
+        <img src="{% static 'images/LOGO.jpg' %}"
+         alt="GUTors logo" /> <!-- New line-->
+    </div>
+{% endblock %}    
