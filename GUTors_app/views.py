@@ -1,20 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("HOMEPAGE")
+    return render(request, 'GUTors_app/index.html')
 
 def login(request):
-    return HttpResponse("GUTors says hey there partner")
+    return render(request, 'GUTors_app/login.html')
 
 def register(request):
-    return HttpResponse("GUTors says hey there partner")
+    return render(request, 'GUTors_app/register.html')
 
 def profile(request):
-    return HttpResponse("GUTors says hey there partner")
+    return render(request, 'GUTors_app/profile.html')
 
 def search(request):
-    return HttpResponse("GUTors says hey there partner")
+    return render(request, 'GUTors_app/search.html')
 
 def review(request):
-    return HttpResponse("GUTors says hey there partner")
+    return render(request, 'GUTors_app/review.html')
