@@ -6,6 +6,9 @@ def home(request):
 def login(request):
     return render(request, 'GUTors_app/login.html')
 
+def logout(request):
+    return render(request, 'GUTors_app/logout.html')
+
 def register(request):
     return render(request, 'GUTors_app/register.html')
 

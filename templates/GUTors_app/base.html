@@ -1,36 +1,34 @@
 <!DOCTYPE html>
-
-<html>
-    
-<html>
-    <head lang="en">
-        <meta charset="UTF-8" />
-        <title>
-            GUTors - 
-            {% block title_block %}
-                Your student led tutoring website!
-            {% endblock %}
-        </title>
-    </head>
-    <body>
-        <div>
-        {% block body_block %}
-        <li><a href="{% url 'GUTors:home' %}">Homepage</a></li>
-        <li><a href="{% url 'GUTors:login' %}">Login</a></li>
-
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        GUTors - 
+        {% block title_block %}
+            Your student-led tutoring website!
         {% endblock %}
-        </div>
-        <div>
-            {% block sidebar_block %}
-                
-            {% endblock %}
-        </div>
-        <hr />
-        <div>
-            <ul>
+    </title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'GUTors:home' %}">Homepage</a></li>
+            <li><a href="{% url 'GUTors:login' %}">Login</a></li>
+            <li><a href="{% url 'GUTors:logout' %}">Logout</a></li>
+            <li><a href="{% url 'GUTors:profile' %}">Profile</a></li>
+            <li><a href="{% url 'GUTors:register' %}">Register</a></li>
+            <li><a href="{% url 'GUTors:review' %}">Review</a></li>
+            <li><a href="{% url 'GUTors:search' %}">Search</a></li>
+        </ul>
+    </nav>
 
-            </ul>
-        </div>
-    </body>
+    <div>
+        {% block body_block %} {% endblock %}
+    </div>
+
+    <footer>
+        <hr>
+        <p>&copy; 2025 GUTors</p>
+    </footer>
+</body>
 </html>

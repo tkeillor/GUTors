@@ -6,6 +6,7 @@ app_name = 'GUTors'
 urlpatterns = [
     path('', views.home, name='home'),
     path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
     path('search/', views.search, name='search'),
     path('review/', views.review, name='review'),
