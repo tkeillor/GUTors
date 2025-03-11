@@ -1,7 +1,7 @@
 from django.contrib import admin
-from GUTors_app.models import Student, Tutor, Booking, Review
+from GUTors_app.models import Subject, UserProfile, TutoringSession, Review
 
-admin.site.register(Student)
-admin.site.register(Tutor)
-admin.site.register(Booking)
+admin.site.register(Subject)
 admin.site.register(Review)
+admin.site.register(UserProfile)
+admin.site.register(TutoringSession)
