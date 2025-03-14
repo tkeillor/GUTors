@@ -9,8 +9,6 @@ from django.contrib.auth.models import User
 
 
 from django.db import models
-from django.contrib.auth.models import User
-
 
 class Subject(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -29,17 +27,17 @@ class UserProfile(models.Model):
 
 
 class TutoringSession(models.Model):
-    tutor = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(UserProfile, related_name='tutoring_session_as_tutor',on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     date = models.DateTimeField()       # scheduled date and time
-    student = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    student = models.ForeignKey(UserProfile, null=True, related_name='tutoring_session_as_student', blank=True, on_delete=models.SET_NULL)
     def __str__(self): 
         status = "Booked" if self.student else "Available"
         return f"{self.subject.name} on {self.date:%Y-%m-%d %H:%M} ({status})"
 
 class Review(models.Model):
-    session = models.OneToOneField(TutoringSession, on_delete=models.CASCADE)
+    session = models.OneToOneField(TutoringSession, on_delete=models.CASCADE, blank = True)
     # One review per session (one student per session)
     rating = models.PositiveSmallIntegerField(default=5)  # 1-5
     comment = models.TextField(max_length=1000)
