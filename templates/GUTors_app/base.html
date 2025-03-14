@@ -18,12 +18,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:home' %}">Homepage</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'auth_login' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'auth_login' %}">Login/Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:profile' %}">Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'registration_register' %}">Register</a></li>
+                
+                {% if use.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}">Logout</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:review' %}">Review</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:search' %}">Search</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
