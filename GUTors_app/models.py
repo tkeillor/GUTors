@@ -43,4 +43,4 @@ class Review(models.Model):
     comment = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self): 
-        return f"Review for {self.session.tutor.user.username} by {self.session.student.username}: {self.rating}/5"
+        return f"Review for {self.session.tutor.user.username} by {self.session.student.user.username}: {self.rating}/5"
