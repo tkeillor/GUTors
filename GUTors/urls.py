@@ -6,5 +6,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('rango/', include('GUTors_app.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('registration.backends.simple.urls'))
 ]
