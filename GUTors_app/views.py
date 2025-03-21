@@ -1,13 +1,63 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.views import View
+from GUTors_app.forms import UserProfileForm
 from GUTors_app.models import *
 from django.db.models import Avg
 from django.db.models import *
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+
 
 def home(request):
     return render(request, 'GUTors_app/home.html')
+
+
+class ProfileView(View):
+    def get_user_details(self, username):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+        user_profile = UserProfile.objects.get_or_create(user=user)[0]
+        form = UserProfileForm({'bio': user_profile.bio,
+                                'profile picture': user_profile.profile_picture,
+                                'subjects': user_profile.subjects})
+        return (user, user_profile, form)
+    
+    
+    @method_decorator(login_required)
+    def get(self, request, username):
+        try:
+            (user, user_profile, form) = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('GUTors:home'))
+        context_dict = {'user_profile': user_profile,
+                        'selected_user': user,
+                        'form': form}
+        return render(request, 'GUTors_app/profile.html', context_dict)
+    
+    @method_decorator(login_required)
+    def post(self, request, username):
+        try:
+            (user, user_profile, form) = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('GUtors:home'))
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('GUTors:profile', user.username)
+        else:
+            print(form.errors)
+        context_dict = {'user_profile': user_profile,
+                        'selected_user': user,
+                        'form': form}
+        return render(request, 'GUTors_app/profile.html', context_dict)
+
 
 
 def profile_setup(request):
@@ -17,18 +67,35 @@ def profile_setup(request):
         form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('profile_detail')  # or wherever you want to send the user next
+            return redirect('profile')  # or wherever you want to send the user next
     return render(request, 'profile_setup.html', {'form': form})
 
-def login(request):
-    '''if request.method == "POST":
+
+
+@login_required
+def register_profile(request):
+    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return redirect('GUTors:profile', user_profile.user.username)
+        else:
+            print(form.errors)
+    context_dict = {'form': form}
+    return render(request, 'GUTors_app/profile_registration.html', context_dict)
+
+
+"""def login(request):
+    if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request,user)
-            return HttpResponseRedirect("/")'''
-    return render(request, 'GUTors_app/login.html')
+            return HttpResponseRedirect("/")"""
 
 def logout(request):
     return render(request, 'GUTors_app/logout.html')
@@ -37,7 +104,7 @@ def register(request):
     return render(request, 'GUTors_app/register.html')
 
 def profile(request):
-    user_profile = get_object_or_404(UserProfile,user=2)
+    user_profile = request.user.userprofile
     reviews = Review.objects.filter(session__tutor=user_profile)
     avg_rating = reviews.aggregate(Avg("rating", default=0))
     subjects = Subject.objects.all()

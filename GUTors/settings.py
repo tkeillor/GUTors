@@ -31,21 +31,27 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
     'registration',
+    'GUTors_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'GUTors_app'
+
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = 'GUTors:profile'
+SIMPLE_BACKEND_REDIRECT_URL = 'GUTors:profile'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
