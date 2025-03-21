@@ -6,13 +6,19 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Welcome</h1>
+<div>
+    <img src="{% static 'images/LOGO.jpg' %}"
+     alt="GUTors logo" /> <!-- New line-->
+</div>   
+<h1>Welcome</h1>
     <div>
         To our tutoring page for Glasgow University Students!
+        GUTors is a tutor matching website for University of Glasgow (UofG) students, 
+        helping them find suitable tutors on campus. Typically, 
+        Tutors are fourth or fifth-year students and the Students are those who are looking for guidance on study. 
+        The students will have the ability to book sessions with tutors and review these sessions. 
+        Tutors can be search for based on their name, average session rating, subjects they teach and/or their availability.
     </div>
 
-    <div>
-        <img src="{% static 'images/LOGO.jpg' %}"
-         alt="GUTors logo" /> <!-- New line-->
-    </div>
+
 {% endblock %}    
