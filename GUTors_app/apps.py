@@ -5,5 +5,5 @@ class GutorsAppConfig(AppConfig):
     name = 'GUTors_app'
 
     def ready(self):
-        import signals
+        import GUTors_app.signals
 

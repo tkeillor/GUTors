@@ -1,14 +1,69 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
+Profile - GUTors
+
 {% endblock %}
 
 {% block body_block %}
-    <h1>Profile</h1>
-    <div>
+    <div class="Bio">
+        <div class="imgcontainer">
+            <img src="{% static 'images/avatar.jpg' %}" alt="Avatar" class="avatar">
+        </div>
+        <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
     </div>
 
- 
-{% endblock %}    
+    <div class="main">
+        <div class="info">
+            <p><strong>Name:</strong> {{ user_profile.user.username }}</p>
+            <p><strong>Subjects I Tutor:</strong>
+                {% for subject in subjects %}
+                {{ subject }}<strong>,</strong>
+                {% endfor %}
+            </p>
+            <p><strong>Availability:</strong> {{ sessions.count }} upcoming sessions</p>
+            <p><strong>Avg. Rating:</strong> {{ avg_rating.rating__avg }}</p>
+        </div>
+
+        <div class="reviews">
+            <h3>Reviews</h3>
+            {% for review in reviews %}
+            {{ review }}
+            <p><strong>Comment: </strong>{{ review.comment }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+<style>
+    .Bio{
+        float: left;
+        width: 30%;
+    }
+
+    .reviews{
+        width: 50%;
+        float:right;
+    }
+
+    .info{
+        width: 50%;
+        float:left;
+    }
+
+    .main{
+        float:right;
+        width:70%;
+    }
+
+    .avatar{
+        max-width: 50%;
+    }
+
+    .navbar-nav-profile{
+        float:right;
+    }
+</style>
+
+{% endblock %}
