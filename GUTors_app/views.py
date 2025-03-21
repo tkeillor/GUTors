@@ -9,6 +9,17 @@ from django.http import HttpResponseRedirect
 def home(request):
     return render(request, 'GUTors_app/home.html')
 
+
+def profile_setup(request):
+    profile = request.user.userprofile  # the related UserProfile for this user
+    form = UserProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_detail')  # or wherever you want to send the user next
+    return render(request, 'profile_setup.html', {'form': form})
+
 def login(request):
     '''if request.method == "POST":
         username = request.POST["username"]
