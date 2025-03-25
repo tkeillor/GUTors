@@ -29,6 +29,13 @@ class SearchForm(forms.Form):
         widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter tutor username'})
     )
 
+    subject = forms.ModelChoiceField(
+         queryset = Subject.objects.all(),
+         empty_label="Select a subject",
+         required = False,
+         widget= forms.Select(attrs={'class': 'form-control'})
+     )
+
 class CreateSessionForm(forms.ModelForm):
 
     subject = forms.ModelChoiceField(
