@@ -117,8 +117,11 @@ def profile(request):
     }
     return render(request, 'GUTors_app/profile.html', context)
 
+@login_required
 def search(request):
-    return render(request, 'GUTors_app/search.html')
+    query = request.GET.get('q','')
+    results = UserProfile.objects.filter(user__username__icontains=query) if query else None
+    return render(request, 'GUTors_app/search.html', {'query':query, 'results':results})
 
 def review(request):
     return render(request, 'GUTors_app/review.html')
