@@ -38,7 +38,6 @@ class CreateSessionForm(forms.ModelForm):
         widget= forms.Select(attrs={'class': 'form-control'})
     )
 
-    )
     title = forms.CharField(max_length=200, help_text="Enter session title: ")
     date = forms.DateTimeField(
         input_formats=["%Y-%m-%dT%H:%M", "%Y-%m-%d %H:%M"],
