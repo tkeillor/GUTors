@@ -22,7 +22,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'comment')
 
-class CreateSession(forms.ModelForm):
+class CreateSessionForm(forms.ModelForm):
     subject = forms.ModelChoiceField(
         queryset = Subject.objects.all(),
         empty_label="Select a subject",
@@ -30,7 +30,10 @@ class CreateSession(forms.ModelForm):
         widget= forms.Select(attrs={'class': 'form-control'})
     )
     title = forms.CharField(max_length=200, help_text="Enter session title: ")
-    date = forms.DateTimeField()
+    date = forms.DateTimeField(
+        input_formats=["%Y-%m-%dT%H:%M", "%Y-%m-%d %H:%M"],
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
+    )
 
     class Meta:
         model = TutoringSession
