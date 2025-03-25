@@ -106,8 +106,8 @@ def register(request):
 def profile(request):
     user_profile = request.user.userprofile
     reviews = Review.objects.filter(session__tutor=user_profile)
-    avg_rating = reviews.aggregate(Avg("rating", default=0))
-    subjects = Subject.objects.all()
+    avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
+    subjects = user_profile.subjects.all()
 
     context = {
         'user_profile': user_profile,
@@ -128,7 +128,7 @@ def search(request):
         results = UserProfile.objects.all()
         if username:
             results = results.filter(user__username__icontains=username)
-        if subject and not results:
+        if subject and not username:
             results = results.filter(subjects=subject)
     return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
 

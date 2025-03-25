@@ -8,6 +8,7 @@
 {% block body_block %}
     <h1>Search for a tutor</h1>
     <div>
+        <p>If a username is entered that will be the search condition, if no username entered the tutors who do the given subjects will be displayed</p>
         <form method = "GET">
             {{ form.as_p }}
             <button type="submit">Search</button>
@@ -21,6 +22,7 @@
                 {% for tutor in results %}
                     {% if tutor.role == 'TUTOR' %}
                         <li>{{ tutor.user.username }}</li>
+                        <a href="{% url 'GUTors:profile' tutor.user.username %}">View Profile</a>
                     {% endif %}
                 {% empty %}
                     <p>no products found.</p>
