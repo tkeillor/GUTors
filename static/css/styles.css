@@ -27,3 +27,8 @@ nav ul li a {
     text-decoration: none;
     padding: 10px;
 }
+
+.avatar{
+    width: 100px;
+    border-radius: 50%;
+}
