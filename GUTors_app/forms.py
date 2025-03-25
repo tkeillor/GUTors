@@ -22,12 +22,22 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'comment')
 
+
+class SearchForm(forms.Form):
+    username = forms.CharField(
+        required = False,
+        widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter tutor username'})
+    )
+
 class CreateSessionForm(forms.ModelForm):
+
     subject = forms.ModelChoiceField(
         queryset = Subject.objects.all(),
         empty_label="Select a subject",
         required = False,
         widget= forms.Select(attrs={'class': 'form-control'})
+    )
+
     )
     title = forms.CharField(max_length=200, help_text="Enter session title: ")
     date = forms.DateTimeField(
@@ -38,3 +48,4 @@ class CreateSessionForm(forms.ModelForm):
     class Meta:
         model = TutoringSession
         exclude = ('tutor','student')
+

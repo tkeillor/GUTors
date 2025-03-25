@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from GUTors_app.forms import UserProfileForm, CreateSessionForm
+from GUTors_app.forms import UserProfileForm, SearchForm, CreateSessionForm
 from GUTors_app.models import *
 from django.db.models import Avg
 from django.db.models import *
@@ -106,8 +106,8 @@ def register(request):
 def profile(request):
     user_profile = request.user.userprofile
     reviews = Review.objects.filter(session__tutor=user_profile)
-    avg_rating = reviews.aggregate(Avg("rating", default=0))
-    subjects = Subject.objects.all()
+    avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
+    subjects = user_profile.subjects.all()
 
     context = {
         'user_profile': user_profile,
@@ -117,8 +117,20 @@ def profile(request):
     }
     return render(request, 'GUTors_app/profile.html', context)
 
+@login_required
 def search(request):
-    return render(request, 'GUTors_app/search.html')
+    form = SearchForm(request.GET or None)
+    results = None
+
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        subject = form.cleaned_data.get('subject')
+        results = UserProfile.objects.all()
+        if username:
+            results = results.filter(user__username__icontains=username)
+        if subject and not username:
+            results = results.filter(subjects=subject)
+    return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
 
 def review(request):
     return render(request, 'GUTors_app/review.html')
