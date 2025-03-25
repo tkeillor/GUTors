@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from GUTors_app.forms import UserProfileForm
+from GUTors_app.forms import UserProfileForm, SearchForm
 from GUTors_app.models import *
 from django.db.models import Avg
 from django.db.models import *
@@ -119,9 +119,18 @@ def profile(request):
 
 @login_required
 def search(request):
-    query = request.GET.get('q','')
-    results = UserProfile.objects.filter(user__username__icontains=query) if query else None
-    return render(request, 'GUTors_app/search.html', {'query':query, 'results':results})
+    form = SearchForm(request.GET or None)
+    results = None
+
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        subject = form.cleaned_data.get('subject')
+        results = UserProfile.objects.all()
+        if username:
+            results = results.filter(user__username__icontains=username)
+        if subject and not results:
+            results = results.filter(subjects=subject)
+    return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
 
 def review(request):
     return render(request, 'GUTors_app/review.html')

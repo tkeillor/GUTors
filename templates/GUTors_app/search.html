@@ -8,18 +8,20 @@
 {% block body_block %}
     <h1>Search for a tutor</h1>
     <div>
-        <form action = "{% url 'GUTors:search' %}" method = "GET">
-            <input type = "text" name="q" placeholder="Search Tutor by username" required>
+        <form method = "GET">
+            {{ form.as_p }}
+            <button type="submit">Search</button>
         </form>
     </div>
 
     <div>
         {% if results is not None %}
             <h1>Search Results</h1>
-            <h2>Search Results for "{{ query }}"</h2>
             <ul>
                 {% for tutor in results %}
-                    <li>{{ tutor.user.username }}</li>
+                    {% if tutor.role == 'TUTOR' %}
+                        <li>{{ tutor.user.username }}</li>
+                    {% endif %}
                 {% empty %}
                     <p>no products found.</p>
                 {% endfor %}

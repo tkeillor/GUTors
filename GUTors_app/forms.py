@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from GUTors_app.models import TutoringSession, Review, UserProfile
+from GUTors_app.models import TutoringSession, Review, UserProfile, Subject
 
 
 
@@ -20,3 +20,15 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('rating', 'comment')
+
+class SearchForm(forms.Form):
+    username = forms.CharField(
+        required = False,
+        widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter tutor username'})
+    )
+    subject = forms.ModelChoiceField(
+        queryset = Subject.objects.all(),
+        empty_label="Select a subject",
+        required = False,
+        widget= forms.Select(attrs={'class': 'form-control'})
+    )
