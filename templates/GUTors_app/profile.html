@@ -24,7 +24,13 @@ Profile - GUTors
                 {{ subject }}<strong>,</strong>
                 {% endfor %}
             </p>
-            <p><strong>Availability:</strong> {{ sessions.count }} upcoming sessions</p>
+            <p>Number of sessions: {{sessions|length }}</p>
+            <p><strong>My Sessions:</strong></p>
+            <ul>
+                {% for session in sessions %}
+                <li>{{ session }}, <a href="{% url 'GUTors:session' session.id %}">View Session</a></li>
+                {% endfor %}
+            </ul>
             <p><strong>Avg. Rating:</strong> {{ avg_rating }}</p>
         </div>
 

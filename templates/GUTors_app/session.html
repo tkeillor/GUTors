@@ -9,11 +9,11 @@
     <h2>Student Session Booking</h2>
     <div class="session_info">
         <p><strong>Tutor    </strong>{{ session.tutor }}</p>
-        <p><strong>Sebject  </strong>{{ session.subject }}</p>
+        <p><strong>Subject  </strong>{{ session.subject }}</p>
         <p><strong>Time Slot    </strong>{{ session.date }}</p>
     </div>
     <div class ="session submit">
-        <form id="join_session" method = "post" action = "{% url 'GUTors:session' %}">
+        <form id="join_session" method = "post" action = "{% url 'GUTors:session' session.id %}">
             {% csrf_token %}
             {% if session.student == null %}
                 <input type="submit" name="submit" value="Book Session">

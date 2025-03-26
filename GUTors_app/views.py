@@ -109,17 +109,20 @@ def register_profile(request):
 def register(request):
     return render(request, 'GUTors_app/register.html')
 
-def profile(request):
+def profile(request, username):
     user_profile = request.user.userprofile
     reviews = Review.objects.filter(session__tutor=user_profile)
     avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
     subjects = user_profile.subjects.all()
+    sessions = TutoringSession.objects.all().filter(tutor=user_profile)
+    print(f'user_profile: {user_profile}')
 
     context = {
         'user_profile': user_profile,
         'reviews': reviews,
         'avg_rating' : avg_rating,
         'subjects' : subjects,
+        'sessions' : sessions
     }
     return render(request, 'GUTors_app/profile.html', context)
 
@@ -157,9 +160,11 @@ def create_tutoring_session(request):
             print(form.errors)
     return render(request, 'GUTors_app/create_tutoring_session.html', {'form':form})
 
-def join_session(request):
-    session = TutoringSession.objects.get(TutoringSession, id=session_id)
+def join_session(request, id):
+    print(f'id: {id}')
+    session = get_object_or_404(TutoringSession, id=id)
     form = JoinSessionForm()
+    print(f'session: {session}')
 
     if request.method == 'POST':
         form = JoinSessionForm(request.POST)
