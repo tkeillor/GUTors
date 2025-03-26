@@ -10,7 +10,9 @@
     <img src="{% static 'images/LOGO.jpg' %}" alt="GUTors logo" class="img-fluid" style="max-width: 200px;">
     <h1 class="mt-3">Welcome to GUTors</h1>
     <p class="lead">Your go to website for student-led tutoring at the University of Glasgow.</p>
+    {% if user.is_authenticated %}
     <a href="{% url 'GUTors:search' %}" class="btn btn-primary btn-lg mt-2">Find a Tutor</a>
+    {% endif %}
 </div>
 
 </div>   
