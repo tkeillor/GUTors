@@ -32,7 +32,13 @@ Profile - GUTors
                 {% endfor %}
             </ul>
             <p><strong>Avg. Rating:</strong> {{ avg_rating }}</p>
+            {% if user.username == user_profile.user.username %}
+            <div class="mt-3">
+                <a href="{% url 'GUTors:register_profile' %}" class="btn btn-primary">Edit Profile</a>
+            </div>
+            {% endif %}
         </div>
+        
 
 
         <div class="reviews">
