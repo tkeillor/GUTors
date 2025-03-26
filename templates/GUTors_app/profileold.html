@@ -24,9 +24,8 @@ Profile - GUTors
                 {% endfor %}
             </p>
             <p><strong>Availability:</strong> {{ sessions.count }} upcoming sessions</p>
-            <p><strong>Avg. Rating:</strong> {{ avg_rating }}</p>
+            <p><strong>Avg. Rating:</strong> {{ avg_rating.rating__avg }}</p>
         </div>
-
 
         <div class="reviews">
             <h3>Reviews</h3>

@@ -7,6 +7,7 @@ from GUTors_app.models import TutoringSession, Review, UserProfile, Subject
 
 
 class UserProfileForm(forms.ModelForm):
+    subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = UserProfile
         fields = ['role', 'bio', 'profile_picture', 'subjects']

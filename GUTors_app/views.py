@@ -36,8 +36,17 @@ class ProfileView(View):
             (user, user_profile, form) = self.get_user_details(username)
         except TypeError:
             return redirect(reverse('GUTors:home'))
+
+        reviews = Review.objects.filter(session__tutor=user_profile)
+        avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
+        subjects = user_profile.subjects.all()
+        print(f"Subjects for {user_profile.user.username}: {list(subjects)}")
+        
         context_dict = {'user_profile': user_profile,
                         'selected_user': user,
+                        'reviews': reviews,
+                        'avg_rating' : avg_rating,
+                        'subjects' : subjects,
                         'form': form}
         return render(request, 'GUTors_app/profile.html', context_dict)
     
