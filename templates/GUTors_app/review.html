@@ -1,14 +1,45 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
-{% block title_block %}
-{% endblock %}
+{% block title_block %}Review{% endblock %}
 
 {% block body_block %}
-    <h1>Review</h1>
-    <div>
-    </div>
+    <div class="container">
+        <h1 class="my-4">Leave a Review</h1>
+        
+        {# Review submission form #}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="rating">Rating (1-5):</label>
+                <select class="form-control w-25" id="rating" name="rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" id="comment" name="comment" rows="4" maxlength="1000" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
 
- 
-{% endblock %}    
+        {# Display existing reviews #}
+        <h2 class="my-4">Previous Reviews</h2>
+        <div class="list-group">
+            {% for review in reviews %}
+                <div class="list-group-item">
+                    <h5>{{ review.session.tutor.user.username }} ({{ review.rating }}/5)</h5>
+                    <p>{{ review.comment }}</p>
+                    <small class="text-muted">{{ review.created_at }}</small>
+                </div>
+            {% empty %}
+                <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
