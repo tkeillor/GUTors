@@ -10,7 +10,13 @@
 {% block body_block %}
 <div class="jumbotron p-4">
     <div class="container">
-        <h1 class="jumbotron-heading">Register Here - Step 2</h1>
+        <h1 class="jumbotron-heading">
+            {% if is_edit %}
+                Edit Your Profile
+            {% else %}
+                Register Here - Step 2
+            {% endif %}
+        </h1>
     </div>
 </div>
 
@@ -21,7 +27,7 @@
               enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Create Profile" />
+            <input type="submit" value="{% if is_edit %}Update Profile{% else %}Create Profile{% endif %}" />
         </form>
     </div>
 </div>

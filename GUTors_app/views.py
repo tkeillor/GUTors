@@ -83,17 +83,46 @@ def profile_setup(request):
 
 @login_required
 def register_profile(request):
-    form = UserProfileForm()
+    try:
+        # Try to get existing profile
+        user_profile = UserProfile.objects.get(user=request.user)
+        # If we get here, the profile exists - we're editing
+        is_edit = True
+    except UserProfile.DoesNotExist:
+        # Profile doesn't exist - we're creating new
+        user_profile = None
+        is_edit = False
+    
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
+        if is_edit:
+            # Editing existing profile
+            form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        else:
+            # Creating new profile
+            form = UserProfileForm(request.POST, request.FILES)
+            
         if form.is_valid():
-            user_profile = form.save(commit=False)
-            user_profile.user = request.user
-            user_profile.save()
+            if not is_edit:
+                user_profile = form.save(commit=False)
+                user_profile.user = request.user
+                user_profile.save()
+                form.save_m2m()
+            else:
+                form.save()
+                
             return redirect('GUTors:profile', user_profile.user.username)
         else:
             print(form.errors)
-    context_dict = {'form': form}
+    else:
+        if is_edit:
+            form = UserProfileForm(instance=user_profile)
+        else:
+            form = UserProfileForm()
+    
+    context_dict = {
+        'form': form, 
+        'is_edit': is_edit
+    }
     return render(request, 'GUTors_app/profile_registration.html', context_dict)
 
 
