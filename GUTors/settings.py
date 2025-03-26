@@ -52,6 +52,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL = 'GUTors:profile'
 SIMPLE_BACKEND_REDIRECT_URL = 'GUTors:profile'
+LOGOUT_REDIRECT_URL = 'GUTors:home'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
