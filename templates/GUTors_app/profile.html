@@ -18,6 +18,7 @@ Profile - GUTors
     <div class="main">
         <div class="info">
             <p><strong>Name:</strong> {{ user_profile.user.username }}</p>
+            <p><strong>Role:</strong> {{ user_profile.role }}</p>
             <p><strong>Subjects I Tutor:</strong>
                 {% for subject in subjects %}
                 {{ subject }}<strong>,</strong>

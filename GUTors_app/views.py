@@ -106,9 +106,6 @@ def register_profile(request):
             login(request,user)
             return HttpResponseRedirect("/")"""
 
-def logout(request):
-    return render(request, 'GUTors_app/logout.html')
-
 def register(request):
     return render(request, 'GUTors_app/register.html')
 
