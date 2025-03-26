@@ -1,0 +1,25 @@
+{% extends 'GUTors_app/base.html' %}
+
+{% load static %}
+
+{% block title_block %}
+{% endblock %}
+
+{% block body_block %}
+    <h2>Student Session Booking</h2>
+    <div class="session_info">
+        <p><strong>Tutor    </strong>{{ session.tutor }}</p>
+        <p><strong>Sebject  </strong>{{ session.subject }}</p>
+        <p><strong>Time Slot    </strong>{{ session.date }}</p>
+    </div>
+    <div class ="session submit">
+        <form id="join_session" method = "post" action = "{% url 'GUTors:session' %}">
+            {% csrf_token %}
+            {% if session.student == null %}
+                <input type="submit" name="submit" value="Book Session">
+            {% else %}
+                <a href="{% url 'GUTors:home' %}" class="btn btn-primary btn-lg mt-2">Review a session</a>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

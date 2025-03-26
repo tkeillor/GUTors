@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from GUTors_app.forms import UserProfileForm, SearchForm, CreateSessionForm
+from GUTors_app.forms import UserProfileForm, SearchForm, CreateSessionForm, JoinSessionForm
 from GUTors_app.models import *
 from django.db.models import Avg
 from django.db.models import *
@@ -156,3 +156,23 @@ def create_tutoring_session(request):
         else:
             print(form.errors)
     return render(request, 'GUTors_app/create_tutoring_session.html', {'form':form})
+
+def join_session(request):
+    session = TutoringSession.objects.get(TutoringSession, id=session_id)
+    form = JoinSessionForm()
+
+    if request.method == 'POST':
+        form = JoinSessionForm(request.POST)
+        if form.is_valid():
+            session.student = request.user.userprofile
+            session.save()
+        return redirect(reverse('home'))
+    
+    context = {
+        'session':session,
+        'form':form
+    }
+    
+    return render(request, 'GUTors_app/session.html',context)
+
+

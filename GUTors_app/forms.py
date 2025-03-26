@@ -56,3 +56,10 @@ class CreateSessionForm(forms.ModelForm):
         model = TutoringSession
         exclude = ('tutor','student')
 
+
+class JoinSessionForm(forms.ModelForm):
+    class Meta:
+        model = TutoringSession
+        fields = ('student',)
+
+
