@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 
@@ -39,7 +40,7 @@ class TutoringSession(models.Model):
 class Review(models.Model):
     session = models.ForeignKey(TutoringSession, on_delete=models.CASCADE, blank = True)
     # One review per session (one student per session)
-    rating = models.PositiveSmallIntegerField(default=5)  # 1-5
+    rating = models.PositiveSmallIntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])  # 1-5
     comment = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self): 
