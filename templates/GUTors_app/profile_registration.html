@@ -1,6 +1,6 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load static %}
+{% load staticfiles %}
 
 {% block title_block %}
     {% if is_edit %}
@@ -23,7 +23,7 @@
         
         <!-- Profile Picture Preview -->
         <div class="text-center">
-            <img id="avatarPreview" src="{% static 'images/default-avatar.png' %}" alt="Profile Picture Preview" class="avatar-preview">
+            <img id="avatarPreview" src="{% static 'images/avatar.jpg' %}" alt="Profile Picture Preview" class="avatar-preview">
         </div>
 
         <form method="post"
@@ -45,22 +45,6 @@
     </div>
 </div>
 
-<!-- JavaScript for Live Profile Picture Preview -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const fileInput = document.querySelector("input[type='file']");
-        const previewImage = document.getElementById("avatarPreview");
+<script src="{% static 'js/profilePicPreview.js' %}"></script>
 
-        fileInput.addEventListener("change", function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    previewImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-</script>
 {% endblock %}
