@@ -139,9 +139,10 @@ def register(request):
     return render(request, 'GUTors_app/register.html')
 
 def profile(request, username):
-    user_profile = request.user.userprofile
+    user_profile = get_object_or_404(UserProfile, user__username=username)
+    request_user = request.user.userprofile
     reviews = Review.objects.filter(session__tutor=user_profile)
-    avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
+    avg_rating = round(reviews.aggregate(avg = Avg("rating"))["avg"] or 0,1)
     subjects = user_profile.subjects.all()
     sessions = TutoringSession.objects.all().filter(tutor=user_profile)
     print(f'user_profile: {user_profile}')
