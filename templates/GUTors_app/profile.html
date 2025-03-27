@@ -10,7 +10,7 @@ Profile - GUTors
 {% block body_block %}
     <div class="Bio">
         <div class="imgcontainer">
-            <img src="{% static 'images/avatar.jpg' %}" alt="Avatar" class="avatar">
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar">
         </div>
         <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
     </div>

@@ -23,7 +23,7 @@
         
         <!-- Profile Picture Preview -->
         <div class="text-center">
-            <img id="avatarPreview" src="{% static 'images/avatar.jpg' %}" alt="Profile Picture Preview" class="avatar-preview">
+            <img id="avatarPreview" src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar">
         </div>
 
         <form method="post"

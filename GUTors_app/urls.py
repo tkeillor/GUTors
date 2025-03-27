@@ -1,5 +1,7 @@
 from django.urls import include, path
 from GUTors_app import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 app_name = 'GUTors'
@@ -16,4 +18,4 @@ urlpatterns = [
     path('session/<int:session_id>/review/', views.review_session, name='review_session'),
     path('session/<int:id>/', views.join_session, name='session')
     #path('booking/', views.booking, name='booking'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

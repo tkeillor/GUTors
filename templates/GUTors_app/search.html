@@ -8,7 +8,7 @@
 {% block body_block %}
     <h1>Search for a tutor</h1>
     <div>
-        <p>If a username is entered that will be the search condition, if no username entered the tutors who do the given subjects will be displayed</p>
+        <p>If no fields are entered all tutors will be returned. If username is entered then this will override the subject field.</p>
         <form method = "GET">
             {{ form.as_p }}
             <button type="submit">Search</button>
