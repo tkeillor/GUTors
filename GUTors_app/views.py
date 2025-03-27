@@ -171,25 +171,60 @@ def search(request):
     return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
 
 @login_required
+def review_session(request, session_id):
+    # Get the session object
+    session = get_object_or_404(TutoringSession, id=session_id)
+    user_profile = request.user.userprofile
+    
+    # Security check: make sure the user is the student in this session
+    if session.student != user_profile:
+        return redirect('GUTors:home')
+    
+    # Check if a review already exists for this session
+    try:
+        existing_review = Review.objects.get(session=session)
+        form = ReviewForm(instance=existing_review)
+        is_edit = True
+    except Review.DoesNotExist:
+        form = ReviewForm()
+        is_edit = False
+    
+    # Get all reviews by this user for display
+    reviews = Review.objects.filter(session__student=user_profile)
+    
+    if request.method == "POST":
+        if is_edit:
+            form = ReviewForm(request.POST, instance=existing_review)
+        else:
+            form = ReviewForm(request.POST)
+            
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.session = session
+            review.save()
+            return redirect('GUTors:profile', session.tutor.user.username)
+    
+    return render(request, 'GUTors_app/review.html', {
+        'session': session,
+        'sessions': [session],  # For compatibility with existing template
+        'reviews': reviews,
+        'form': form,
+        'is_edit': is_edit
+    })
+
+
+@login_required
 def review(request):
-    form = ReviewForm()
     user_profile = request.user.userprofile
     sessions = TutoringSession.objects.filter(student=user_profile)
     reviews = Review.objects.filter(session__student=user_profile)
-    if request.method == "POST":
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.reviewer = request.user.userprofile
-            review.session = get_object_or_404(TutoringSession, id=request.POST.get("session_id"))
-            review.save()
-            return redirect("GUTors:review")
-    else:
-        form = ReviewForm()
-
-    return render(request, 'GUTors_app/review.html', {'sessions': sessions,'reviews': reviews,'form': form
+    form = ReviewForm()
+    
+    return render(request, 'GUTors_app/review.html', {
+        'sessions': sessions,
+        'reviews': reviews,
+        'form': form
     })
-
 
 def create_tutoring_session(request):
     form = CreateSessionForm()

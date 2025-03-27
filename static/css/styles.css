@@ -62,3 +62,142 @@ form input[type="submit"], .btn-primary{
 form input[type="submit"]:hover, .btn-primary:hover{
     background-color: #29365e;
 }
+
+/* Session and Review Page Styles */
+.page-title {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #1f2a44;
+    text-align: center;
+}
+
+.section-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #1f2a44;
+}
+
+/* Content cards for session and review pages */
+.session-card {
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.session-header {
+    background-color: #1f2a44;
+    padding: 12px 15px;
+    color: white;
+}
+
+.session-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.session-body {
+    padding: 15px;
+    color: #333;
+}
+
+/* Layout elements */
+.info-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.info-column {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 10px;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-text {
+    font-size: 0.85rem;
+    color: #eee;
+}
+
+/* Alert messages */
+.message-box {
+    padding: 10px 15px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.info-message {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.warning-message {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.action-button {
+    background-color: #1f2a44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.action-button:hover {
+    background-color: #29365e;
+    color: white;
+}
+
+.secondary-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.secondary-button:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+/* Form styling enhancements */
+.form-actions {
+    margin-top: 1.2rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .info-column {
+        flex: 100%;
+    }
+    
+    .header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .date-text {
+        margin-top: 5px;
+    }
+}
