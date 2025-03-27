@@ -15,7 +15,10 @@ def populate():
     subjects = [{"name":"Maths"},
             {"name":"Computer Science"},
             {"name":"Physics"},
-            {"name":"Economics"}]
+            {"name":"Economics"},
+            {"name":"Business"},
+            {"name":"Engineering"},
+            {"name":"Chemistry"}]
     
     for subject in subjects:
         add_subject(subject["name"])
@@ -25,38 +28,49 @@ def populate():
               "last_name":"Keillor",
               "email":"thomaskeillor@gmail.com",
               "role":"TUTOR",
-              "bio":"Im Thomas"},
+              "bio":"Im Thomas, I'm a for Maths and Computer Science!",
+              "subjects":["Maths","Computer Science"],
+              "profile_picture":"{% static 'images/frasergrahempfp.jpg' %}"},
 
               {"username":"dgong",
               "first_name":"Daibo",
               "last_name":"Gong",
               "email":"daibogong@gmail.com",
               "role":"STUDENT",
-              "bio":"Im Daibo"},
+              "bio":"Im Daibo",
+              "subjects":["Maths","Computer Science"],
+              "profile_picture":"{% static 'images/frasergrahempfp.jpg' %}"
+              },
 
               {"username":"fgraham",
               "first_name":"Fraser",
               "last_name":"Graham",
               "email":"frasergraham@gmail.com",
               "role":"STUDENT",
-              "bio":"Im Fraser"},
+              "bio":"Im Fraser",
+              "subjects":["Physics", "Chemistry", "Maths"],
+              "profile_picture":"{% static 'images/avatar.jpg' %}"},
               
               {"username":"gedwards",
               "first_name":"Gareth",
               "last_name":"Edwards",
               "email":"garethedwards@gmail.com",
               "role":"STUDENT",
-              "bio":"Im Gareth"},
+              "bio":"Im Gareth",
+              "subjects":["Maths","Computer Science"],
+              "profile_picture":"{% static 'images/frasergrahempfp.jpg' %}"},
               
               {"username":"pkrawczuk",
               "first_name":"Patryk",
               "last_name":"Krawczuk",
               "email":"patrykkrawczuk@gmail.com",
               "role":"TUTOR",
-              "bio":"Im Patryk"},]
+              "bio":"Im Patryk",
+              "subjects":["Maths","Computer Science"],
+              "profile_picture":"{% static 'images/frasergrahempfp.jpg' %}"},]
     
     for user in users:
-        add_user(user["username"], user["first_name"], user["last_name"], user["email"], user["role"], user["bio"])
+        add_user(user["username"], user["first_name"], user["last_name"], user["email"], user["role"], user["bio"], user["subjects"], user["profile_picture"])
 
     tutoringSessions = [{"title":"Thomas Tutors Daibo",
                          "date":datetime(2025, 3, 13).date(),
@@ -99,9 +113,12 @@ def populate():
 
 
 
-def add_user(username, first_name, last_name, email, role, bio):
+def add_user(username, first_name, last_name, email, role, bio, subjects, profile_picture):
     user = User.objects.create_user(username, email = email, first_name = first_name, last_name =last_name)
-    u = UserProfile.objects.get_or_create(user = user, role = role, bio = bio)[0]
+    u = UserProfile.objects.get_or_create(user = user, role = role, bio = bio, profile_picture=profile_picture)[0]
+    for subject in subjects:
+        s = Subject.objects.get(name=subject)
+        u.subjects.add(s)
     u.save()
     return u
 
