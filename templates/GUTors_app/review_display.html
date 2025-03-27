@@ -7,9 +7,10 @@
         {% for review in review_list %}
         <div class="review-item mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0">{{ review.session.subject.name }}</h5>
+                <h5 class="mb-0">{{ review.session.title }}</h5>
                 <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
             </div>
+            <p><strong>Subject:</strong> {{ review.session.subject.name }}</p>
             <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
             <p><strong>Comment:</strong> {{ review.comment }}</p>
             <div class="review-actions mt-2">

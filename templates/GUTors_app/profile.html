@@ -3,8 +3,11 @@
 
 {% block title_block %}Profile - GUTors{% endblock %}
 
+
+
 {% block body_block %}
 <div class="container">
+    {% csrf_token %}
     <div class="row">
         <div class="col-md-4">
             <div class="card mb-4">
@@ -47,29 +50,38 @@
                         <p>{{ avg_rating|floatformat:1 }} / 5.0</p>
                     {% endif %}
 
-                    {% if user_profile.role == 'TUTOR' %}
-                        {% with session_title="My Teaching Sessions" session_list=tutor_sessions %}
-                            {% include "GUTors_app/session_display.html" %}
-                        {% endwith %}
-                    {% else %}
-                        {% with session_title="My Learning Sessions" session_list=student_sessions %}
-                            {% include "GUTors_app/session_display.html" %}
-                        {% endwith %}
-                    {% endif %}
                 </div>
             </div>
 
+
+        </div>
+    </div>
+
+    <div class="card-md-8">
+
+            {% if user_profile.role == 'TUTOR' %}
+                {% with session_title="My Teaching Sessions" session_list=sessions %}
+                    {% include "GUTors_app/session_display.html" %}
+                {% endwith %}
+            {% else %}
+                {% with session_title="My Learning Sessions" session_list=sessions %}
+                    {% include "GUTors_app/session_display.html" %}
+                {% endwith %}
+            {% endif %}
+            
+
             
             {% if user_profile.role == 'TUTOR' %}
-                {% with review_title="Reviews About Me" review_list=tutor_reviews %}
+                {% with review_title="Reviews About Me" review_list=reviews %}
                     {% include "GUTors_app/review_display.html" %}
                 {% endwith %}
             {% else %}
-                {% with review_title="Reviews I Wrote" review_list=student_reviews %}
+                {% with review_title="Reviews I Wrote" review_list=reviews  %}
                     {% include "GUTors_app/review_display.html" %}
                 {% endwith %}
             {% endif %}
-        </div>
+
     </div>
 </div>
+<script src="{% static 'js/bookSession.js' %}"></script>
 {% endblock %}
