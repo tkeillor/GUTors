@@ -140,19 +140,21 @@ def register(request):
 
 def profile(request, username):
     user_profile = get_object_or_404(UserProfile, user__username=username)
-    request_user = request.user.userprofile
-    reviews = Review.objects.filter(session__tutor=user_profile)
-    avg_rating = round(reviews.aggregate(avg = Avg("rating"))["avg"] or 0,1)
+    tutor_reviews = Review.objects.filter(session__tutor=user_profile)
+    student_reviews = Review.objects.filter(session__student=user_profile)
+    avg_rating = round(tutor_reviews.aggregate(avg = Avg("rating"))["avg"] or 0,1)
     subjects = user_profile.subjects.all()
-    sessions = TutoringSession.objects.all().filter(tutor=user_profile)
-    print(f'user_profile: {user_profile}')
+    tutor_sessions = TutoringSession.objects.all().filter(tutor=user_profile)
+    student_sessions = TutoringSession.objects.all().filter(student=user_profile)
 
     context = {
         'user_profile': user_profile,
-        'reviews': reviews,
+        'tutor_reviews': tutor_reviews,
+        'student_reviews':student_reviews,
         'avg_rating' : avg_rating,
         'subjects' : subjects,
-        'sessions' : sessions
+        'tutor_sessions' : tutor_sessions,
+        'student_sessions': student_sessions
     }
     return render(request, 'GUTors_app/profile.html', context)
 

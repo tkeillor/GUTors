@@ -19,6 +19,7 @@ Profile - GUTors
         <div class="info">
             <p><strong>Name:</strong> {{ user_profile.user.username }}</p>
             <p><strong>Role:</strong> {{ user_profile.role }}</p>
+            {% if user_profile.role == 'TUTOR' %}
             <p><strong>Subjects I Tutor:</strong>
                 {% for subject in subjects %}
                 {{ subject }}<strong>,</strong>
@@ -26,27 +27,55 @@ Profile - GUTors
             </p>
             <p><strong>My Sessions:</strong></p>
             <ul>
-                {% for session in sessions %}
+                {% for session in tutor_sessions %}
                 <li>{{ session }}, <a href="{% url 'GUTors:session' session.id %}">View Session</a></li>
                 {% endfor %}
             </ul>
             <p><strong>Avg. Rating:</strong> {{ avg_rating }}</p>
+            {% endif %}
+
+            {% if user_profile.role == 'STUDENT' %}
+            <p><strong>Subjects I Study:</strong>
+                {% for subject in subjects %}
+                {{ subject }}<strong>,</strong>
+                {% endfor %}
+            </p>
+            <p><strong>My Sessions:</strong></p>
+            <ul>
+                {% for session in student_sessions %}
+                <li>{{ session }}, <a href="{% url 'GUTors:session' session.id %}">View Session</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
             {% if user.username == user_profile.user.username %}
             <div class="mt-3">
                 <a href="{% url 'GUTors:register_profile' %}" class="btn btn-primary">Edit Profile</a>
             </div>
             {% endif %}
         </div>
+
         
 
-
+        {% if user_profile.role == 'TUTOR' %}
         <div class="reviews">
             <h3>Reviews</h3>
-            {% for review in reviews %}
+            {% for review in tutor_reviews %}
             {{ review }}
             <p><strong>Comment: </strong>{{ review.comment }}</p>
             {% endfor %}
         </div>
+        {% endif %}
+
+        {% if user_profile.role == 'STUDENT' %}
+        <div class="reviews">
+            <h3>Reviews</h3>
+            {% for review in student_reviews %}
+            {{ review }}
+            <p><strong>Comment: </strong>{{ review.comment }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 
 {% endblock %}
