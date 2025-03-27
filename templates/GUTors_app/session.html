@@ -36,6 +36,8 @@ Session Details
                 {% endif %}
             </div>
             
+
+            {% if user.userprofile.role == 'STUDENT' %}
             <div class="mt-4">
                 <form id="join_session" method="post" action="{% url 'GUTors:session' session.id %}">
                     {% csrf_token %}
@@ -49,6 +51,13 @@ Session Details
                     {% endif %}
                 </form>
             </div>
+            {% endif %}
+
+            {% if user.userprofile.role == 'TUTOR' %}
+            <div>
+                ONLY STUDENTS CAN JOIN SESSIONS
+            </div>
+            {% endif %}
         </div>
     </div>
     

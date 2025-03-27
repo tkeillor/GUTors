@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Link to core User
     role = models.CharField(max_length=7, choices=ROLE_CHOICES, default='STUDENT')
     bio = models.TextField(blank=True)
-    profile_picture = models.ImageField(upload_to='profile_images',default='avatar.jpg', blank=True)
+    profile_picture = models.ImageField(upload_to='profile_images',default='profile_images/avatar.jpg', blank=True)
     subjects = models.ManyToManyField(Subject, blank=True)  # link to Subject model (for tutors)
 
     def __str__(self):
