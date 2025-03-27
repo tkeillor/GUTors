@@ -1,0 +1,11 @@
+<h4>{{ session_title }}</h4>
+<ul class="list-unstyled">
+    {% for session in session_list %}
+    <li class="mb-2">
+        {{ session }}
+        <a href="{% url 'GUTors:session' session.id %}" class="btn btn-outline-uni-blue btn-sm ml-2">View Session</a>
+    </li>
+    {% empty %}
+    <li>No sessions yet</li>
+    {% endfor %}
+</ul>

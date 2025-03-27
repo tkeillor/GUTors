@@ -6,13 +6,12 @@
 Session Details
 {% endblock %}
 
-
 {% block body_block %}
 <div class="container">
-    <h1 class="mt-4 mb-4">Session Details</h1>
+    <h1 class="text-center mb-4">Session Details</h1>
     
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-uni-blue">
             <h3 class="mb-0">{{ session.subject }} with {{ session.tutor }}</h3>
         </div>
         <div class="card-body">
@@ -36,25 +35,24 @@ Session Details
                 {% endif %}
             </div>
             
-
             {% if user.userprofile.role == 'STUDENT' %}
             <div class="mt-4">
                 <form id="join_session" method="post" action="{% url 'GUTors:session' session.id %}">
                     {% csrf_token %}
                     {% if session.student == null %}
-                        <button type="submit" name="submit" class="btn btn-success btn-lg">Book This Session</button>
+                        <button type="submit" name="submit" class="btn btn-uni-blue">Book This Session</button>
                     {% else %}
                         <div class="alert alert-info" role="alert">
                             You have booked this session.
                         </div>
-                        <a href="{% url 'GUTors:review_session' session.id %}" class="btn btn-primary btn-lg">Review this session</a>
+                        <a href="{% url 'GUTors:review_session' session.id %}" class="btn btn-uni-blue">Review this session</a>
                     {% endif %}
                 </form>
             </div>
             {% endif %}
 
             {% if user.userprofile.role == 'TUTOR' %}
-            <div>
+            <div class="alert alert-warning">
                 ONLY STUDENTS CAN JOIN SESSIONS
             </div>
             {% endif %}
@@ -63,8 +61,8 @@ Session Details
     
     <!-- Optional information section -->
     <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="mb-0">Session Information</h4>
+        <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">Session Information</h3>
         </div>
         <div class="card-body">
             <p>Meet your tutor at the designated time. Come prepared with any questions or materials you'd like to cover.</p>

@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -68,7 +68,7 @@ class CreateSessionForm(forms.ModelForm):
         """Ensure the date is not in the past"""
         selected_date = self.cleaned_data.get('date')
         
-        if selected_date and selected_date < datetime.now():
+        if selected_date and selected_date < timezone.now():
             raise ValidationError("You cannot schedule a session in the past")
         
         return selected_date

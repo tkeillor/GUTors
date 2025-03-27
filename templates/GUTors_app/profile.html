@@ -1,19 +1,19 @@
 {% extends 'GUTors_app/base.html' %}
 {% load static %}
 
-{% block title_block %} Profile - GUTors {% endblock %}
+{% block title_block %}Profile - GUTors{% endblock %}
 
 {% block body_block %}
-<div class="container profile-container">
+<div class="container">
     <div class="row">
-        <div class="col-md-4 profile-sidebar">
+        <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body text-center">
                     <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar-preview mb-3">
                     <h3>{{ user_profile.user.username }}</h3>
                     <p class="text-muted">{{ user_profile.role }}</p>
                     {% if user.username == user_profile.user.username %}
-                    <a href="{% url 'GUTors:register_profile' %}" class="action-button mt-2">Edit Profile</a>
+                    <a href="{% url 'GUTors:register_profile' %}" class="btn btn-uni-blue mt-2">Edit Profile</a>
                     {% endif %}
                 </div>
                 {% if user_profile.bio %}
@@ -25,90 +25,49 @@
             </div>
         </div>
 
-        <div class="col-md-8 profile-content">
+        <div class="col-md-8">
             <div class="card mb-4">
-                <div class="session-header">
-                    <h3>Profile Information</h3>
+                <div class="card-header bg-uni-blue">
+                    <h3 class="mb-0">Profile Information</h3>
                 </div>
-                <div class="session-body">
+                <div class="card-body">
                     {% if user_profile.role == 'TUTOR' %}
                         <h4>Subjects I Tutor</h4>
-                        <p>
-                            {% for subject in subjects %}
-                                {{ subject }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
+                    {% else %}
+                        <h4>Subjects I Study</h4>
+                    {% endif %}
+                    <p>
+                        {% for subject in subjects %}
+                            {{ subject }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    
+                    {% if user_profile.role == 'TUTOR' %}
                         <h4>Average Rating</h4>
                         <p>{{ avg_rating|floatformat:1 }} / 5.0</p>
                     {% endif %}
 
-                    {% if user_profile.role == 'STUDENT' %}
-                        <h4>Subjects I Study</h4>
-                        <p>
-                            {% for subject in subjects %}
-                                {{ subject }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
-                    {% endif %}
-
                     {% if user_profile.role == 'TUTOR' %}
-                    <h4>My Teaching Sessions</h4>
-                        <ul class="list-unstyled">
-                            {% for session in tutor_sessions %}
-                            <li class="mb-2">
-                                {{ session }}
-                                <a href="{% url 'GUTors:session' session.id %}" class="secondary-button btn-sm ml-2">View Session</a>
-                            </li>
-                            {% empty %}
-                            <li>No sessions yet</li>
-                            {% endfor %}
-                        </ul>
+                        {% with session_title="My Teaching Sessions" session_list=tutor_sessions %}
+                            {% include "GUTors_app/session_display.html" %}
+                        {% endwith %}
                     {% else %}
-                    <h4>My Learning Sessions</h4>
-                        <ul class="list-unstyled">
-                            {% for session in student_sessions %}
-                            <li class="mb-2">
-                                {{ session }}
-                                <a href="{% url 'GUTors:session' session.id %}" class="secondary-button btn-sm ml-2">View Session</a>
-                            </li>
-                            {% empty %}
-                            <li>No sessions yet</li>
-                            {% endfor %}
-                        </ul>
+                        {% with session_title="My Learning Sessions" session_list=student_sessions %}
+                            {% include "GUTors_app/session_display.html" %}
+                        {% endwith %}
                     {% endif %}
                 </div>
             </div>
 
-            {% if user_profile.role == 'TUTOR' and tutor_reviews %}
-            <div class="card">
-                <div class="session-header">
-                    <h3>Reviews About Me</h3>
-                </div>
-                <div class="session-body">
-                    {% for review in tutor_reviews %}
-                    <div class="review-item mb-3">
-                        <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
-                        <p><strong>Comment:</strong> {{ review.comment }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            {% if user_profile.role == 'STUDENT' and student_reviews %}
-            <div class="card">
-                <div class="session-header">
-                    <h3>Reviews I Wrote</h3>
-                </div>
-                <div class="session-body">
-                    {% for review in student_reviews %}
-                    <div class="review-item mb-3">
-                        <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
-                        <p><strong>Comment:</strong> {{ review.comment }}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+            
+            {% if user_profile.role == 'TUTOR' %}
+                {% with review_title="Reviews About Me" review_list=tutor_reviews %}
+                    {% include "GUTors_app/review_display.html" %}
+                {% endwith %}
+            {% else %}
+                {% with review_title="Reviews I Wrote" review_list=student_reviews %}
+                    {% include "GUTors_app/review_display.html" %}
+                {% endwith %}
             {% endif %}
         </div>
     </div>

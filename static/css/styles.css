@@ -1,3 +1,4 @@
+/* Base Styles */
 body {
     background-color: #29365e; /* Dark UNI blue */
     color: white; 
@@ -12,8 +13,59 @@ body {
 
 .card{
     border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.card-header {
+    padding: 12px 15px;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* University Colors */
+.bg-uni-blue {
+    background-color: #29365e !important;
+    color: white !important;
+}
+
+.card-header.bg-uni-blue {
+    background-color: #29365e !important;
+    color: white !important;
+}
+
+.card-header.bg-uni-blue h3,
+.card-header.bg-uni-blue h3.mb-0 {
+    color: white !important;
+}
+
+.btn-uni-blue {
+    background-color: #29365e !important;
+    border-color:#29365e !important;
+    color: white !important;
+    transition: background-color 0.3s;
+}
+
+.btn-uni-blue:hover {
+    background-color: #1f2a44 !important;
+    border-color: #1f2a44 !important;
+}
+
+.btn-outline-uni-blue {
+    color: #29365e !important;
+    border-color: #29365e !important;
+    background-color: transparent !important;
+    transition: all 0.3s;
+}
+
+.btn-outline-uni-blue:hover {
+    background-color: #29365e !important;
+    color: white !important;
+}
+
+/* Navigation */
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -32,16 +84,10 @@ nav ul li a {
     padding: 10px;
 }
 
-.avatar{
-    width: 100px;
-    border-radius: 50%;
-}
-
-h2 {
-    color: #1f2a44
-}
-
-form input, form select, form textarea {
+/* Form Elements */
+form input, 
+form select, 
+form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -49,26 +95,82 @@ form input, form select, form textarea {
     border: 1px solid #ccc;
 }
 
-form input[type="submit"], .btn-primary{
-    background-color: #1f2a44;
+.form-group {
+    margin-bottom: 1rem;
+}
+
+form input[type="submit"], 
+.btn-primary, 
+button[type="submit"] {
+    background-color: #29365e;
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 10px;
+    font-size: 16px;
     cursor: pointer;
     transition: background 0.3s;
+    border-radius: 5px;
 }
 
-form input[type="submit"]:hover, .btn-primary:hover{
-    background-color: #29365e;
+form input[type="submit"]:hover, 
+.btn-primary:hover, 
+button[type="submit"]:hover {
+    background-color: #1f2a44;
 }
 
-/* Session and Review Page Styles */
-.page-title {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+/* Avatar/Profile Image */
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1f2a44;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+}
+
+h2 {
     color: #1f2a44;
+}
+
+.card-header h3 {
+    color: white;
+    margin-bottom: 0;
+}
+
+/* Alerts */
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.alert-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.alert-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* Page-specific components */
+.page-title {
     text-align: center;
+    margin: 1.5rem 0;
+    color: #1f2a44;
 }
 
 .section-title {
@@ -77,32 +179,6 @@ form input[type="submit"]:hover, .btn-primary:hover{
     color: #1f2a44;
 }
 
-/* Content cards for session and review pages */
-.session-card {
-    background-color: white;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.session-header {
-    background-color: #1f2a44;
-    padding: 12px 15px;
-    color: white;
-}
-
-.session-header h3 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.session-body {
-    padding: 15px;
-    color: #333;
-}
-
-/* Layout elements */
 .info-row {
     display: flex;
     flex-wrap: wrap;
@@ -126,64 +202,67 @@ form input[type="submit"]:hover, .btn-primary:hover{
     color: #eee;
 }
 
-/* Alert messages */
-.message-box {
-    padding: 10px 15px;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    font-weight: bold;
+.review-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
-.info-message {
-    background-color: #17a2b8;
-    color: white;
+.review-item:last-child {
+    border-bottom: none;
 }
 
-.warning-message {
-    background-color: #ffc107;
+/* Checkbox styling */
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 6px;
+    width: auto;
+    margin-bottom: 0;
+}
+
+.checkbox-item label {
+    margin-bottom: 0;
+    font-weight: normal;
     color: #333;
 }
 
-.action-button {
-    background-color: #1f2a44;
-    color: white;
-    border: none;
-    padding: 10px 20px;
+/* Fix for checkboxes overwriting global form styles */
+input[type="checkbox"] {
+    width: auto !important;
+    margin-bottom: 0 !important;
+}
+
+ul.errorlist {
+    color: #dc3545;
+    padding-left: 20px;
+    margin-top: 5px;
+}
+
+/* Make select elements more attractive */
+select.form-control, 
+input.form-control, 
+textarea.form-control {
+    width: 100%;
+    padding: 8px;
     border-radius: 5px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.3s;
-    text-decoration: none;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.action-button:hover {
-    background-color: #29365e;
-    color: white;
-}
-
-.secondary-button {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.secondary-button:hover {
-    background-color: #5a6268;
-    color: white;
-}
-
-/* Form styling enhancements */
-.form-actions {
-    margin-top: 1.2rem;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    color: #333;
 }
 
 /* Mobile responsiveness */
@@ -200,137 +279,13 @@ form input[type="submit"]:hover, .btn-primary:hover{
     .date-text {
         margin-top: 5px;
     }
-}
 
-/* Profile Form Container */
-.profile-form-container {
-    max-width: 600px;
-    margin: auto;
-}
-
-/* Profile Form Styling */
-.profile-form-container .card {
-    border-radius: 8px;
-}
-
-.profile-form-container h2 {
-    color: #1f2a44;
-}
-
-/* Profile Form Inputs */
-.profile-form-container form input,
-.profile-form-container form select,
-.profile-form-container form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-/* File Upload (Profile Picture) */
-.profile-form-container form input[type="file"] {
-    padding: 8px;
-    border: none;
-    background-color: white;
-    font-size: 14px;
-}
-
-/* Profile Submit Button */
-.btn-profile-submit {
-    background-color: #1f2a44;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    border-radius: 5px;
-}
-
-.btn-profile-submit:hover {
-    background-color: #29365e;
-}
-
-/* Profile Picture Preview */
-.avatar-preview {
-    display: block;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 0 auto 15px;
-    object-fit: cover;
-    border: 3px solid #1f2a44;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .profile-form-container {
-        width: 90%;
-    }
-}
-
-
-.Bio{
-    float: left;
-    width: 30%;
-}
-
-.reviews{
-    width: 50%;
-    float:right;
-}
-
-.info{
-    width: 50%;
-    float:left;
-}
-
-.main{
-    float:right;
-    width:70%;
-}
-
-/* Profile Page Specific Styles */
-.profile-container {
-    background-color: #f4f6f9;
-    padding: 30px 0;
-}
-
-.profile-sidebar .card {
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.profile-content .card {
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.review-item {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.review-item:nth-child(even) {
-    background-color: #f1f3f5;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .profile-sidebar, 
-    .profile-content {
-        flex: 0 0 100%;
-        max-width: 100%;
+    .checkbox-container {
+        flex-direction: column;
     }
     
-    .profile-sidebar {
-        margin-bottom: 20px;
+    .checkbox-item {
+        width: 100%;
+        margin-right: 0;
     }
 }
-
-

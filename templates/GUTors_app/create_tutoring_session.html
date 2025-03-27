@@ -1,23 +1,34 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
+Create Tutoring Session
 {% endblock %}
 
 {% block body_block %}
-    <h1>Create Tutoring Session</h1>
-    <div>
-        <form id="create_tutoring_session" method = "post" action = "{% url 'GUTors:create_tutoring_session' %}">
-            {% csrf_token %}
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-            {% endfor %}
-            <input type="submit" name="submit" value="Create Tutoring Session" />
-        </form>
+<div class="container">
+    <h1 class="text-center mb-4">Create Tutoring Session</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">New Session</h3>
+        </div>
+        <div class="card-body">
+            <form id="create_tutoring_session" method="post" action="{% url 'GUTors:create_tutoring_session' %}">
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button type="submit" name="submit" class="btn btn-uni-blue">Create Tutoring Session</button>
+            </form>
+        </div>
     </div>
-
- 
-{% endblock %}    
+</div>
+{% endblock %}

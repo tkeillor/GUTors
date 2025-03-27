@@ -1,0 +1,31 @@
+<div class="card mb-4">
+    <div class="card-header bg-uni-blue">
+        <h3 class="mb-0">{{ session.subject.name }} with {{ session.tutor.user.username }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                {% if session.title %}
+                <p><strong>Title:</strong> {{ session.title }}</p>
+                {% endif %}
+                <p><strong>Subject:</strong> {{ session.subject.name }}</p>
+                <p><strong>Tutor:</strong> {{ session.tutor.user.username }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Date & Time:</strong> {{ session.date }}</p>
+                {% if session.student %}
+                <p><strong>Student:</strong> {{ session.student }}</p>
+                {% endif %}
+                
+                {% if actions %}
+                <div class="session-actions mt-3" 
+                     data-session-id="{{ session.id }}" 
+                     data-is-reviewed="{{ session.id in reviewed_sessions|yesno:'true,false' }}" 
+                     data-review-url="{% url 'GUTors:review_session' session.id %}">
+                    <!-- This div will be populated by JavaScript -->
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

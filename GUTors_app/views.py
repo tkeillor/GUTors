@@ -17,51 +17,86 @@ def home(request):
     return render(request, 'GUTors_app/home.html')
 
 
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+
 class ProfileView(View):
     def get_user_details(self, username):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             return None
-        user_profile = UserProfile.objects.get_or_create(user=user)[0]
-        form = UserProfileForm({'bio': user_profile.bio,
-                                'profile picture': user_profile.profile_picture,
-                                'subjects': user_profile.subjects})
-        return (user, user_profile, form)
-    
+        
+        try:
+            # Try to get the existing profile
+            user_profile = UserProfile.objects.get(user=user)
+            form = UserProfileForm({'bio': user_profile.bio,
+                                   'profile picture': user_profile.profile_picture,
+                                   'subjects': user_profile.subjects})
+            return (user, user_profile, form)
+        except UserProfile.DoesNotExist:
+            # Profile doesn't exist - we'll handle this in the view methods
+            return (user, None, None)
     
     @method_decorator(login_required)
     def get(self, request, username):
-        try:
-            (user, user_profile, form) = self.get_user_details(username)
-        except TypeError:
+        result = self.get_user_details(username)
+        
+        if result is None:
+            messages.error(request, f"User '{username}' does not exist.")
             return redirect(reverse('GUTors:home'))
+            
+        user, user_profile, form = result
+        
+        # If profile doesn't exist
+        if user_profile is None:
+            # If this is the current user, redirect to profile creation
+            if request.user.username == username:
+                return redirect('GUTors:register_profile')
+            else:
+                # If it's someone else's profile, show error message
+                messages.error(request, f"The user '{username}' has not created a profile yet.")
+                return redirect(reverse('GUTors:home'))
 
         reviews = Review.objects.filter(session__tutor=user_profile)
-        avg_rating = reviews.aggregate(avg = Avg("rating"))["avg"] or 0
+        avg_rating = reviews.aggregate(avg=Avg("rating"))["avg"] or 0
         subjects = user_profile.subjects.all()
         print(f"Subjects for {user_profile.user.username}: {list(subjects)}")
         
         context_dict = {'user_profile': user_profile,
                         'selected_user': user,
                         'reviews': reviews,
-                        'avg_rating' : avg_rating,
-                        'subjects' : subjects,
+                        'avg_rating': avg_rating,
+                        'subjects': subjects,
                         'form': form}
         return render(request, 'GUTors_app/profile.html', context_dict)
     
     @method_decorator(login_required)
     def post(self, request, username):
-        try:
-            (user, user_profile, form) = self.get_user_details(username)
-        except TypeError:
-            return redirect(reverse('GUtors:home'))
+        # Check if this is the user's own profile
+        if request.user.username != username:
+            messages.error(request, "You can only edit your own profile.")
+            return redirect(reverse('GUTors:home'))
+            
+        result = self.get_user_details(username)
+        
+        if result is None:
+            messages.error(request, f"User '{username}' does not exist.")
+            return redirect(reverse('GUTors:home'))
+            
+        user, user_profile, form = result
+        
+        # If profile doesn't exist
+        if user_profile is None:
+            return redirect('GUTors:register_profile')
+            
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save(commit=True)
             return redirect('GUTors:profile', user.username)
         else:
             print(form.errors)
+            
         context_dict = {'user_profile': user_profile,
                         'selected_user': user,
                         'form': form}
@@ -230,7 +265,7 @@ def create_tutoring_session(request):
             session.tutor = request.user.userprofile
             session.save()
 
-            return redirect(reverse('home'))
+            return redirect('GUTors:session', session.id)
         else:
             print(form.errors)
     return render(request, 'GUTors_app/create_tutoring_session.html', {'form':form})

@@ -1,6 +1,6 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
     {% if is_edit %}
@@ -11,44 +11,67 @@
 {% endblock %}
 
 {% block body_block %}
-<div class="container profile-form-container mt-5">
-    <div class="card p-4 shadow-lg bg-light">
-        <h2 class="text-center text-dark">
-            {% if is_edit %}
-                Edit Your Profile
-            {% else %}
-                Register Here - Step 2
-            {% endif %}
-        </h2>
-        
-        <!-- Profile Picture Preview -->
-        <div class="text-center">
-            {% if is_edit %}
-                <img id="avatarPreview" src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar">
-            {% else %}
-                <img id="avatarPreview" src="{% static 'images/avatar.jpg' %}" alt="Profile Pic" class="avatar">
-            {% endif %}
+<div class="container mt-5">
+    <div class="card mb-4">
+        <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">
+                {% if is_edit %}
+                    Edit Your Profile
+                {% else %}
+                    Register Here - Step 2
+                {% endif %}
+            </h3>
         </div>
-
-        <form method="post"
-              action="{% url 'GUTors:register_profile' %}"
-              enctype="multipart/form-data"
-              class="mt-3">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-
+        <div class="card-body">
+            <!-- Profile Picture Preview -->
             <div class="text-center">
-                <button type="submit" class="btn btn-profile-submit">
-                    {% if is_edit %}Update Profile{% else %}Create Profile{% endif %}
-                </button>
+                {% if is_edit %}
+                    <img id="avatarPreview" src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar mb-3">
+                {% else %}
+                    <img id="avatarPreview" src="{% static 'images/avatar.jpg' %}" alt="Profile Pic" class="avatar mb-3">
+                {% endif %}
             </div>
-        </form>
+
+            <form method="post"
+                  action="{% url 'GUTors:register_profile' %}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="form-group">
+                        {% if field.name == 'subjects' %}
+                            <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong></label>
+                            <div class="checkbox-container">
+                                {% for checkbox in field %}
+                                    <div class="checkbox-item">
+                                        {{ checkbox.tag }}
+                                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <label for="{{ field.id_for_label }}"><strong>{{ field.label }}</strong></label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        {% endif %}
+                        
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-uni-blue">
+                        {% if is_edit %}Update Profile{% else %}Create Profile{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script src="{% static 'js/profilePicPreview.js' %}"></script>
-
 {% endblock %}

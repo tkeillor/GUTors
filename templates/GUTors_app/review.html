@@ -1,108 +1,64 @@
 {% extends 'GUTors_app/base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
   {% if session %}Review Session with {{ session.tutor.user.username }}{% else %}Reviews{% endif %}
+{% endblock %}
+
+{% block head_extra %}
+  {{ block.super }}
+  <script src="{% static 'js/sessionActions.js' %}"></script>
 {% endblock %}
 
 {% block body_block %}
 <div class="container">
   {% if session %}
     <!-- Single session review mode -->
-    <h1 class="page-title">Review Session</h1>
+    <h1 class="text-center mb-4">Review Session</h1>
     
-    <div class="session-card">
-      <div class="session-header">
-        <h3>{{ session.subject.name }} with {{ session.tutor.user.username }}</h3>
+    <!-- Include the session card for the current session -->
+    {% include "GUTors_app/session_card.html" with session=session %}
+    
+    <div class="card mb-4">
+      <div class="card-header bg-uni-blue">
+        <h3 class="mb-0">Your Review</h3>
       </div>
-      <div class="session-body">
-        <div class="info-row">
-          <div class="info-column">
-            <p><strong>Title:</strong> {{ session.title}}</p>
-            <p><strong>Tutor:</strong> {{ session.tutor.user.username }}</p>
-            <p><strong>Subject:</strong> {{ session.subject.name }}</p>
-          </div>
-          <div class="info-column">
-            <p><strong>Date & Time:</strong> {{ session.date }}</p>
-          </div>
-        </div>
-        
+      <div class="card-body">
         <form method="post" action="{% url 'GUTors:review_session' session.id %}">
           {% csrf_token %}
-          <div>
+          <div class="form-group">
             <label for="id_rating"><strong>Rating:</strong></label>
             {{ form.rating }}
           </div>
-          <div>
+          <div class="form-group">
             <label for="id_comment"><strong>Comment:</strong></label>
             {{ form.comment }}
           </div>
-          <div class="form-actions">
-            <input type="submit" value="{% if is_edit %}Update{% else %}Submit{% endif %} Review">
-            <a href="{% url 'GUTors:profile' session.tutor.user.username %}" class="secondary-button">Cancel</a>
+          <div class="form-group">
+            <button type="submit" class="btn btn-uni-blue">{% if is_edit %}Update{% else %}Submit{% endif %} Review</button>
+            <a href="{% url 'GUTors:profile' session.tutor.user.username %}" class="btn btn-outline-uni-blue">Cancel</a>
           </div>
         </form>
       </div>
     </div>
   {% else %}
     <!-- List of all sessions -->
-    <h1 class="page-title">Your Sessions to Review</h1>
+    <h1 class="text-center mb-4">Your Sessions to Review</h1>
 
     {% for session in sessions %}
-      <div class="session-card">
-        <div class="session-header">
-          <h3>{{ session.subject.name }} with {{ session.tutor.user.username }}</h3>
-        </div>
-        <div class="session-body">
-          <div class="info-row">
-            <div class="info-column">
-              <p><strong>Subject:</strong> {{ session.subject.name }}</p>
-              <p><strong>Tutor:</strong> {{ session.tutor.user.username }}</p>
-            </div>
-            <div class="info-column">
-              <p><strong>Date & Time:</strong> {{ session.date }}</p>
-              
-              {% if session.id in reviewed_sessions %}
-                <div class="message-box info-message">
-                  You've already reviewed this session
-                </div>
-                <a href="{% url 'GUTors:review_session' session.id %}" class="action-button">Edit Review</a>
-              {% else %}
-                <a href="{% url 'GUTors:review_session' session.id %}" class="action-button">Write a Review</a>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Include session card with custom actions block for each session -->
+      {% include "GUTors_app/session_card.html" with session=session actions=True %}
     {% empty %}
-      <div class="message-box warning-message">
+      <div class="alert alert-warning">
         You haven't attended any sessions yet.
       </div>
     {% endfor %}
     
-    <h2 class="section-title">Your Reviews</h2>
-    {% if reviews %}
-      {% for review in reviews %}
-        <div class="session-card">
-          <div class="session-header">
-            <div class="header-flex">
-              <h3>{{ review.session.subject.name }} with {{ review.session.tutor.user.username }}</h3>
-              <span class="date-text">{{ review.created_at|date:"M d, Y" }}</span>
-            </div>
-          </div>
-          <div class="session-body">
-            <p><strong>Rating:</strong> {{ review.rating }}/5</p>
-            <p><strong>Comment:</strong> {{ review.comment }}</p>
-            <a href="{% url 'GUTors:review_session' review.session.id %}" class="action-button">Edit</a>
-          </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <div class="message-box warning-message">
-        You have not written any reviews yet.
-      </div>
-    {% endif %}
+    <h2 class="mb-4">Your Reviews</h2>
+    {% with review_title="Your Reviews" review_list=reviews %}
+      {% include "GUTors_app/review_display.html" %}
+    {% endwith %}
   {% endif %}
 </div>
 {% endblock %}

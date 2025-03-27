@@ -1,39 +1,47 @@
 {% extends 'GUTors_app/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
-  Login - GUTors
+Login - GUTors
 {% endblock %}
 
 {% block body_block %}
-  <div class ="container mt-5" style="max-width: 400px;">
-      <h2 class = "text-center">Login to GUTors</h2>
-
-      <div class="text-center">
-        <img src="{% static 'images/avatar.jpg' %}" alt="Avatar" class="avatar">
-      </div>
-
-      <form method="post" action="{% url 'auth_login' %}">
-        {% csrf_token %}
-
-        <div class="form-group">
-          <label for="username"><b>Username</b></label>
-          <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card mt-5">
+        <div class="card-header bg-uni-blue">
+          <h3 class="mb-0 text-center">Login to GUTors</h3>
         </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <img src="{% static 'images/avatar.jpg' %}" alt="Avatar" class="avatar">
+          </div>
 
-        <div class="form-group">
-          <label for="password"><b>Password</b></label>
-          <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+          <form method="post" action="{% url 'auth_login' %}">
+            {% csrf_token %}
 
+            <div class="form-group">
+              <label for="username"><strong>Username</strong></label>
+              <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password"><strong>Password</strong></label>
+              <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-uni-blue">Login</button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-3">
+            <p>Don't have an account? <a href="{% url 'registration_register' %}">Register</a></p>
+          </div>
         </div>
-
-        <button type="submit">Login</button>
-
-        
-      </form>
-      <div class="text-center mt-3">
-      <p>Don't have an account? <a href="{% url 'registration_register' %}">Register</a>.</p>
       </div>
-
-
+    </div>
+  </div>
+</div>
 {% endblock %}
