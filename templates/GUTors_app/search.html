@@ -21,8 +21,7 @@
             <ul>
                 {% for tutor in results %}
                     {% if tutor.role == 'TUTOR' %}
-                        <li>{{ tutor.user.username }}</li>
-                        <a href="{% url 'GUTors:profile' tutor.user.username %}">View Profile</a>
+                        <li><a href="{% url 'GUTors:profile' tutor.user.username %}">{{ tutor.user.username }}</a></li>
                     {% endif %}
                 {% empty %}
                     <p>no products found.</p>
