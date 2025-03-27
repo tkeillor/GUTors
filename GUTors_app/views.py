@@ -243,10 +243,8 @@ def create_tutoring_session(request):
     return render(request, 'GUTors_app/create_tutoring_session.html', {'form':form})
 
 def join_session(request, id):
-    print(f'id: {id}')
     session = get_object_or_404(TutoringSession, id=id)
     form = JoinSessionForm()
-    print(f'session: {session}')
 
     if request.method == 'POST':
         form = JoinSessionForm(request.POST)
