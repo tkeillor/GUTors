@@ -56,8 +56,10 @@
     </ul>
 </div>
 
+{% if not user.is_authenticated %}
 <div class="text-center my-5">
     <h3>Ready to Improve Your Learning?</h3>
-    <a href="{% url 'registration_register' %}" class="btn btn-primary btn-lg mt-2">Get Started</a>
+    <a href="{% url 'auth_login' %}" class="btn btn-primary btn-lg mt-2">Get Started</a>
 </div>
+{% endif %}
 {% endblock %}    

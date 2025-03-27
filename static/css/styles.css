@@ -201,3 +201,73 @@ form input[type="submit"]:hover, .btn-primary:hover{
         margin-top: 5px;
     }
 }
+
+/* Profile Form Container */
+.profile-form-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Profile Form Styling */
+.profile-form-container .card {
+    border-radius: 8px;
+}
+
+.profile-form-container h2 {
+    color: #1f2a44;
+}
+
+/* Profile Form Inputs */
+.profile-form-container form input,
+.profile-form-container form select,
+.profile-form-container form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* File Upload (Profile Picture) */
+.profile-form-container form input[type="file"] {
+    padding: 8px;
+    border: none;
+    background-color: white;
+    font-size: 14px;
+}
+
+/* Profile Submit Button */
+.btn-profile-submit {
+    background-color: #1f2a44;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    border-radius: 5px;
+}
+
+.btn-profile-submit:hover {
+    background-color: #29365e;
+}
+
+/* Profile Picture Preview */
+.avatar-preview {
+    display: block;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    object-fit: cover;
+    border: 3px solid #1f2a44;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .profile-form-container {
+        width: 90%;
+    }
+}
