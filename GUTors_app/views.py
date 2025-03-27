@@ -125,16 +125,6 @@ def register_profile(request):
     }
     return render(request, 'GUTors_app/profile_registration.html', context_dict)
 
-
-"""def login(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request,user)
-            return HttpResponseRedirect("/")"""
-
 def register(request):
     return render(request, 'GUTors_app/register.html')
 
@@ -254,7 +244,6 @@ def join_session(request, id):
         if form.is_valid():
             session.student = request.user.userprofile
             session.save()
-        return redirect(reverse('home'))
     
     context = {
         'session':session,

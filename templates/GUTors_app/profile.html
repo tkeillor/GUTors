@@ -51,12 +51,12 @@
                         </p>
                     {% endif %}
 
-                    <h4>My Sessions</h4>
                     {% if user_profile.role == 'TUTOR' %}
+                    <h4>My Teaching Sessions</h4>
                         <ul class="list-unstyled">
                             {% for session in tutor_sessions %}
                             <li class="mb-2">
-                                {{ session }} 
+                                {{ session }}
                                 <a href="{% url 'GUTors:session' session.id %}" class="secondary-button btn-sm ml-2">View Session</a>
                             </li>
                             {% empty %}
@@ -64,10 +64,11 @@
                             {% endfor %}
                         </ul>
                     {% else %}
+                    <h4>My Learning Sessions</h4>
                         <ul class="list-unstyled">
                             {% for session in student_sessions %}
                             <li class="mb-2">
-                                {{ session }} 
+                                {{ session }}
                                 <a href="{% url 'GUTors:session' session.id %}" class="secondary-button btn-sm ml-2">View Session</a>
                             </li>
                             {% empty %}
@@ -81,7 +82,7 @@
             {% if user_profile.role == 'TUTOR' and tutor_reviews %}
             <div class="card">
                 <div class="session-header">
-                    <h3>Reviews</h3>
+                    <h3>Reviews About Me</h3>
                 </div>
                 <div class="session-body">
                     {% for review in tutor_reviews %}
@@ -97,7 +98,7 @@
             {% if user_profile.role == 'STUDENT' and student_reviews %}
             <div class="card">
                 <div class="session-header">
-                    <h3>Reviews</h3>
+                    <h3>Reviews I Wrote</h3>
                 </div>
                 <div class="session-body">
                     {% for review in student_reviews %}
