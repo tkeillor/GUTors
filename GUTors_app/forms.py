@@ -19,6 +19,13 @@ class TutoringSessionForm(forms.ModelForm):
         exclude = ('tutor', 'student')
 
 class ReviewForm(forms.ModelForm):
+
+    rating =forms.ChoiceField(
+        choices=[(1,"1/5"),(2,"2/5"),(3,"3/5"),(4,"4/5"),(5,"5/5")],
+         required=True,
+         widget= forms.Select(attrs={'class': 'form-control'})
+     )
+
     class Meta:
         model = Review
         fields = ('rating', 'comment')
