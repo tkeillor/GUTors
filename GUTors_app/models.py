@@ -31,7 +31,7 @@ class TutoringSession(models.Model):
     tutor = models.ForeignKey(UserProfile, related_name='tutoring_session_as_tutor',on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    date = models.DateTimeField()     
+    date = models.DateTimeField(null=True, blank=True)     
     student = models.ForeignKey(UserProfile, null=True, related_name='tutoring_session_as_student', blank=True, on_delete=models.SET_NULL)
     def __str__(self): 
         status = "Booked" if self.student else "Available"
