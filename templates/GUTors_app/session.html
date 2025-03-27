@@ -18,6 +18,9 @@ Session Details
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
+                    <p><strong>Title:</strong> {{ session.title }}</p>
+                </div>
+                <div class="col-md-4">
                     <p><strong>Tutor:</strong> {{ session.tutor }}</p>
                 </div>
                 <div class="col-md-4">
@@ -26,6 +29,11 @@ Session Details
                 <div class="col-md-4">
                     <p><strong>Date & Time:</strong> {{ session.date }}</p>
                 </div>
+                {% if session.student != None %}
+                <div class="col-md-4">
+                    <p><strong>Student:</strong> {{ session.student }}</p>
+                </div>
+                {% endif %}
             </div>
             
             <div class="mt-4">
