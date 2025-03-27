@@ -1,69 +1,95 @@
-from django.test import TestCase, SimpleTestCase, Client
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from GUTors_app.models import UserProfile, Review, Subject
+from GUTors_app.models import UserProfile, Review, Subject, TutoringSession
 from GUTors_app.forms import UserProfileForm
 
-class TestHomePage(SimpleTestCase):
-    
-    """Testing if homepage returns HTTP 200 response"""
-    def test_homepage_status_code(self):
-        response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
-    
-class TestProfileView(TestCase):
+class ViewTests(TestCase):
     def setUp(self):
-        '''Creating test user'''
+        """Set up test data and client"""
         self.client = Client()
-        self.user = User.objects.create_user(username='testuser', password='ExamplePassword123')
+        
+        # Create a test user and profile
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.user_profile = UserProfile.objects.create(user=self.user, bio="Test Bio", role="STUDENT")
+        
+        # Create a test subject and tutoring session
         self.subject = Subject.objects.create(name="Mathematics")
-        self.user_profile = UserProfile.objects.create(user=self.user, bio="Test Bio")
         self.user_profile.subjects.add(self.subject)
-
         
-    def test_profile_view_logged_in(self):
-        #profile page should load correctly for logged in users
-        self.client.login(username='testuser', password='ExamplePassword123')
-        response = self.client.get(reverse('GUTors:profile', kwargs={'username': 'testuser'}))
-        self.assertEqual(response.status_code,200)
-        self.assertTemplateUsed(response, 'GUTors_app/profile.html')
-        self.assertContains(response, "Test Bio")
-        
-    def test_post_profile_update(self):
-        self.client.login(username='testuser', password='ExamplePassword123')
-        response = self.client.post(
-            reverse('GUTors:profile', kwargs={'username': 'testuser'}),
-            {'bio': 'Updated Bio', 'role': 'STUDENT'}
+        self.session = TutoringSession.objects.create(
+            tutor=self.user_profile,
+            student=self.user_profile,
+            subject=self.subject
         )
-        self.assertEqual(response.status_code,200)#Redirects user after successful form submission
+
+    def test_home_page_loads(self):
+        """Ensure the home page loads successfully"""
+        response = self.client.get(reverse("home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "GUTors_app/home.html")
+
+    def test_profile_view_authenticated(self):
+        """Check if a logged-in user can access their profile"""
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(reverse("GUTors:profile", kwargs={"username": "testuser"}))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "GUTors_app/profile.html")
+        self.assertEqual(response.context["user_profile"], self.user_profile)
+
+    def test_profile_update(self):
+        """Test updating user profile information"""
+        self.client.login(username="testuser", password="password123")
+
+        update_data = {"bio": "Updated Bio", "role": "TUTOR", "subjects": [self.subject.id]}
+        response = self.client.post(reverse("GUTors:Register_profile"), update_data)
+
         self.user_profile.refresh_from_db()
-        self.assertEqual(self.user_profile.bio, 'Updated Bio')  
-        print(response.content.decode())     
-        
-    def test_register_profile_exists(self):
-        self.client.login(username='testuser', password='ExamplePassword123')
-        response = self.client.get(reverse('GUTors:Register_profile'))
+        self.assertEqual(self.user_profile.bio, "Updated Bio")
+        self.assertEqual(self.user_profile.role, "TUTOR")
+
+    def test_search_functionality(self):
+        """Test searching by username and subject"""
+        self.client.login(username="testuser", password="password123")
+
+        # Search by username
+        response = self.client.get(reverse("GUTors:search"), {"username": "testuser"})
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'GUTors_app/profile_registration.html')
-        
-class TestSearchView(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.subject = Subject.objects.create(name="Physics")
-        self.user = User.objects.create_user(username="physics_tutor", password="password")
-        self.user_profile = UserProfile.objects.create(user=self.user)
-        self.user_profile.subjects.add(self.subject)
-            
-    def test_search_by_username(self):
-        response = self.client.get(reverse('GUTors:search'), {'username': 'physics_tutor'})  
+        self.assertContains(response, "testuser")
+
+        # Search by subject
+        response = self.client.get(reverse("GUTors:search"), {"subject": self.subject.id})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "physics_tutor") 
-        
-    def test_searhc_by_subject(self):
-        
-        response = self.client.get(reverse('GUTors:Search'), {'subject':self.subject.id})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Physics")
+        self.assertContains(response, "Mathematics")
+
+    def test_review_submission(self):
+        """Test leaving a review for a tutoring session"""
+        self.client.login(username="testuser", password="password123")
+
+        review_data = {"rating": 4, "comment": "Great session!"}
+        response = self.client.post(reverse("GUTors:review_session", kwargs={"session_id": self.session.id}), review_data)
+
+        review = Review.objects.filter(session=self.session).first()
+        self.assertIsNotNone(review)
+        self.assertEqual(review.rating, 4)
+        self.assertEqual(review.comment, "Great session!")
+
+    def test_create_tutoring_session(self):
+        """Test creating a new tutoring session"""
+        self.client.login(username="testuser", password="password123")
+
+        session_data = {
+            "subject": self.subject.id,
+            "description": "Test tutoring session",
+            "date": "2024-06-15",
+            "start_time": "14:00",
+            "end_time": "15:00"
+        }
+
+        response = self.client.post(reverse("create_session"), session_data)
+        self.assertEqual(response.status_code, 302)  # Should redirect after creation
+        self.assertTrue(TutoringSession.objects.filter(tutor=self.user_profile, subject=self.subject).exists())
 
 
 
