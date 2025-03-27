@@ -27,6 +27,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}">Logout</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:search' %}">Search</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:profile' user.username %}">View Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:review' %}">My Bookings</a></li>
                 {% if user.userprofile.role == 'TUTOR' %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:create_tutoring_session' %}">Create Tutoring Session</a></li>
                 {% endif %}
