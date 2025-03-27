@@ -25,7 +25,6 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}">Logout</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:review' %}">Review</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:search' %}">Search</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'GUTors:profile' user.username %}">View Profile</a></li>
                 {% if user.userprofile.role == 'TUTOR' %}

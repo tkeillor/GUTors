@@ -23,7 +23,11 @@
         
         <!-- Profile Picture Preview -->
         <div class="text-center">
-            <img id="avatarPreview" src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar">
+            {% if is_edit %}
+                <img id="avatarPreview" src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="avatar">
+            {% else %}
+                <img id="avatarPreview" src="{% static 'images/avatar.jpg' %}" alt="Profile Pic" class="avatar">
+            {% endif %}
         </div>
 
         <form method="post"
