@@ -38,7 +38,7 @@ class TutoringSession(models.Model):
         return f"{self.subject.name} on {self.date:%Y-%m-%d %H:%M} ({status})"
 
 class Review(models.Model):
-    session = models.ForeignKey(TutoringSession, on_delete=models.CASCADE, blank = True)
+    session = models.OneToOneField(TutoringSession, on_delete=models.CASCADE, blank=True)
     # One review per session (one student per session)
     rating = models.PositiveSmallIntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])  # 1-5
     comment = models.TextField(max_length=1000)

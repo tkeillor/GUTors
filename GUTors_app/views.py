@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.views import View
-from GUTors_app.forms import UserProfileForm, SearchForm, CreateSessionForm, JoinSessionForm
+from GUTors_app.forms import UserProfileForm, SearchForm, CreateSessionForm, JoinSessionForm, ReviewForm
 from GUTors_app.models import *
 from django.db.models import Avg
 from django.db.models import *
@@ -170,8 +170,26 @@ def search(request):
             results = results.filter(subjects=subject)
     return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
 
+@login_required
 def review(request):
-    return render(request, 'GUTors_app/review.html')
+    form = ReviewForm()
+    user_profile = request.user.userprofile
+    sessions = TutoringSession.objects.filter(student=user_profile)
+    reviews = Review.objects.filter(session__student=user_profile)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.reviewer = request.user.userprofile
+            review.session = get_object_or_404(TutoringSession, id=request.POST.get("session_id"))
+            review.save()
+            return redirect("GUTors:review")
+    else:
+        form = ReviewForm()
+
+    return render(request, 'GUTors_app/review.html', {'sessions': sessions,'reviews': reviews,'form': form
+    })
+
 
 def create_tutoring_session(request):
     form = CreateSessionForm()
