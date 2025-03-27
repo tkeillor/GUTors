@@ -10,6 +10,10 @@ body {
     border-radius: 5px; /*rounded corners */
 }
 
+.card{
+    border-radius: 8px;
+}
+
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -31,4 +35,30 @@ nav ul li a {
 .avatar{
     width: 100px;
     border-radius: 50%;
+}
+
+h2 {
+    color: #1f2a44
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form input[type="submit"], .btn-primary{
+    background-color: #1f2a44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form input[type="submit"]:hover, .btn-primary:hover{
+    background-color: #29365e;
 }
