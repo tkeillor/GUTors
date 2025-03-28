@@ -12,25 +12,23 @@ import shutil
 from django.conf import settings
 from django.core.files import File
 
-
-def move_static_to_media(filename, static_subdir="images", media_subdir="profile_images"):
+def copy_static_to_media(filename, static_subdir="images", media_subdir="profile_images"):
     static_path = os.path.join(settings.BASE_DIR, "static", static_subdir, filename)
     media_path = os.path.join(settings.MEDIA_ROOT, media_subdir, filename)
 
     os.makedirs(os.path.dirname(media_path), exist_ok=True)
 
     if os.path.exists(static_path):
-        shutil.move(static_path, media_path)
-        print(f"Moved {filename} from static to media.")
+        shutil.copy2(static_path, media_path)
+        print(f"Copied {filename} from static to media.")
         return media_path
     else:
         print(f"File {static_path} does not exist.")
         return None
 
-
 def populate():
 
-    move_static_to_media('avatar.jpg')
+    copy_static_to_media('avatar.jpg')
 
     subjects = [{"name":"Maths"},
             {"name":"Computer Science"},
