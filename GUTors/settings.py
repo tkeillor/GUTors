@@ -28,7 +28,7 @@ SECRET_KEY = 'vinjh6ocm*emes-4r&r2w9o$pg_vja*ryrl%=84iz1#17gt&ge'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['GUTorsnet.pythonanywhere.com']
 
 
 
