@@ -19,17 +19,11 @@
                 {% if session.student %}
                 <p><strong>Student:</strong> {{ session.student }}</p>
                 {% endif %}
-                
-                {% if actions %}
-                <div class="session-actions mt-3" 
-                     data-session-id="{{ session.id }}" 
-                     data-is-reviewed="{% if session.id in reviewed_sessions %}true{% else %}false{% endif %}"
-                     data-review-url="{% url 'GUTors:review_session' session.id %}">
-                    <!-- This div will be populated by JavaScript -->
+                <div class="mt-3">
+                    <a href="{% url 'GUTors:session' session.id %}" class="btn btn-outline-uni-blue">View Session</a>
                 </div>
-                {% endif %}
+
             </div>
         </div>
     </div>
-    
 </div>

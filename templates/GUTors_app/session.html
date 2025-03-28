@@ -39,13 +39,17 @@ Session Details
             <div class="mt-4">
                 <form id="join_session" method="post" action="{% url 'GUTors:session' session.id %}">
                     {% csrf_token %}
-                    {% if session.student == null %}
+                    {% if session.student == None %}
                         <button type="submit" name="submit" class="btn btn-uni-blue">Book This Session</button>
-                    {% else %}
+                    {% elif session.student == user.userprofile %}
                         <div class="alert alert-info" role="alert">
                             You have booked this session.
                         </div>
                         <a href="{% url 'GUTors:review_session' session.id %}" class="btn btn-uni-blue">Review this session</a>
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            This session has already been booked by another student.
+                        </div>
                     {% endif %}
                 </form>
             </div>
@@ -59,7 +63,7 @@ Session Details
         </div>
     </div>
     
-    <!-- Optional information section -->
+    
     <div class="card mt-4">
         <div class="card-header bg-uni-blue">
             <h3 class="mb-0">Session Information</h3>

@@ -3,47 +3,90 @@
 {% load static %}
 
 {% block title_block %}
-Search for Tutors
+Search - GUTors
 {% endblock %}
 
 {% block body_block %}
 <div class="container">
-    <h1 class="text-center mb-4">Search for a Tutor</h1>
+    <h1 class="text-center mb-4">Search</h1>
     
     <div class="card mb-4">
         <div class="card-header bg-uni-blue">
             <h3 class="mb-0">Search Options</h3>
         </div>
         <div class="card-body">
-            <p>If no fields are entered all tutors will be returned. If username is entered then this will override the subject field.</p>
-            <form method="GET">
+            <form method="GET" id="search-form">
                 <div class="form-group">
-                    {{ form.as_p }}
+                    <label><strong>I'm looking for:</strong></label>
+                    <div class="radio-container">
+                        {% for value, text in form.search_type.field.choices %}
+                        <div class="radio-item">
+                            <input type="radio" name="search_type" id="id_search_type_{{ forloop.counter0 }}"
+                                   value="{{ value }}" {% if request.GET.search_type == value %} checked
+                                   {% elif not request.GET.search_type and forloop.first %} checked {% endif %}>
+                            <label for="id_search_type_{{ forloop.counter0 }}">{{ text }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}"><strong>Tutor Username:</strong></label>
+                    {{ form.username }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.subject.id_for_label }}"><strong>Subject:</strong></label>
+                    {{ form.subject }}
+                </div>
+                
                 <button type="submit" class="btn btn-uni-blue">Search</button>
             </form>
         </div>
     </div>
 
-    {% if results is not None %}
-    <div class="card">
+
+    {% if tutor_results is not None %}
+    <div class="card mb-4">
         <div class="card-header bg-uni-blue">
-            <h3 class="mb-0">Search Results</h3>
+            <h3 class="mb-0">Tutor Results</h3>
         </div>
         <div class="card-body">
             <div class="list-group">
-                {% for tutor in results %}
-                    {% if tutor.role == 'TUTOR' %}
-                        <a href="{% url 'GUTors:profile' tutor.user.username %}" class="list-group-item list-group-item-action">
-                            {{ tutor.user.username }}
-                        </a>
-                    {% endif %}
+                {% for tutor in tutor_results %}
+                    <a href="{% url 'GUTors:profile' tutor.user.username %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ tutor.user.username }}</h5>
+                            <small>{{ tutor.subjects.all|join:", " }}</small>
+                        </div>
+                        <p class="mb-1">{{ tutor.bio|truncatechars:100 }}</p>
+                    </a>
                 {% empty %}
                     <div class="alert alert-warning">
                         No tutors found matching your criteria.
                     </div>
                 {% endfor %}
             </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if session_results is not None %}
+    <div class="card">
+        <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">Available Sessions</h3>
+        </div>
+        <div class="card-body">
+            {% if session_results %}
+                {% for session in session_results %}
+                    {% include "GUTors_app/session_card.html" with session=session %}
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-warning">
+                    No available sessions found matching your criteria.
+                </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}

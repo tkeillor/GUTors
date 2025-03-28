@@ -73,8 +73,7 @@ class ProfileView(View):
         if form.is_valid():
             form.save(commit=True)
             return redirect('GUTors:profile', user.username)
-        else:
-            print(form.errors)
+
         context_dict = {'user_profile': user_profile,
                         'selected_user': user,
                         'form': form}
@@ -164,17 +163,35 @@ def profile(request, username):
 @login_required
 def search(request):
     form = SearchForm(request.GET or None)
-    results = None
+    tutor_results = None
+    session_results = None
 
     if form.is_valid():
         username = form.cleaned_data.get('username')
         subject = form.cleaned_data.get('subject')
-        results = UserProfile.objects.all()
-        if username:
-            results = results.filter(user__username__icontains=username)
-        if subject and not username:
-            results = results.filter(subjects=subject)
-    return render(request, 'GUTors_app/search.html', {'results':results, 'form':form})
+        search_type = form.cleaned_data.get('search_type')
+        
+        # Search for tutors
+        if search_type == 'tutors':
+            tutor_results = UserProfile.objects.filter(role='TUTOR')
+            if username:
+                tutor_results = tutor_results.filter(user__username__icontains=username)
+            if subject:
+                tutor_results = tutor_results.filter(subjects=subject)
+        
+        # Search for sessions
+        elif search_type == 'sessions':
+            session_results = TutoringSession.objects.filter(student=None)  # Only available sessions
+            if username:
+                session_results = session_results.filter(tutor__user__username__icontains=username)
+            if subject:
+                session_results = session_results.filter(subject=subject)
+                
+    return render(request, 'GUTors_app/search.html', {
+        'form': form,
+        'tutor_results': tutor_results,
+        'session_results': session_results
+    })
 
 @login_required
 def review_session(request, session_id):
@@ -224,12 +241,15 @@ def review(request):
     user_profile = request.user.userprofile
     sessions = TutoringSession.objects.filter(student=user_profile)
     reviews = Review.objects.filter(session__student=user_profile)
-    form = ReviewForm()
+    
+    # Get IDs of sessions that have reviews
+    reviewed_session_ids = reviews.values_list('session_id', flat=True)
     
     return render(request, 'GUTors_app/review.html', {
         'sessions': sessions,
         'reviews': reviews,
-        'form': form
+        'reviewed_sessions': list(reviewed_session_ids),
+        'form': ReviewForm()
     })
 
 def create_tutoring_session(request):
@@ -244,8 +264,6 @@ def create_tutoring_session(request):
             session.save()
 
             return redirect('GUTors:session', session.id)
-        else:
-            print(form.errors)
     return render(request, 'GUTors_app/create_tutoring_session.html', {'form':form})
 
 def join_session(request, id):

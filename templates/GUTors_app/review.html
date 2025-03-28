@@ -1,64 +1,81 @@
 {% extends 'GUTors_app/base.html' %}
-
 {% load static %}
 
-{% block title_block %}
-  {% if session %}Review Session with {{ session.tutor.user.username }}{% else %}Reviews{% endif %}
-{% endblock %}
+{% block title_block %}{% if session %}Review Session - GUTors{% else %}My Bookings - GUTors{% endif %}{% endblock %}
 
-{% block head_extra %}
-  {{ block.super }}
-  <script src="{% static 'js/sessionActions.js' %}"></script>
-{% endblock %}
 
 {% block body_block %}
 <div class="container">
   {% if session %}
-    <!-- Single session review mode -->
-    <h1 class="text-center mb-4">Review Session</h1>
-    
-    <!-- Include the session card for the current session -->
-    {% include "GUTors_app/session_card.html" with session=session %}
-    
-    <div class="card mb-4">
-      <div class="card-header bg-uni-blue">
-        <h3 class="mb-0">Your Review</h3>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">Review Session with {{ session.tutor.user.username }}</h3>
+          </div>
+          <div class="card-body">
+            {% include "GUTors_app/session_card.html" with session=session %}
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <form method="post" action="{% url 'GUTors:review_session' session.id %}">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="id_rating"><strong>Rating:</strong></label>
-            {{ form.rating }}
+    </div>
+    
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">Your Review</h3>
           </div>
-          <div class="form-group">
-            <label for="id_comment"><strong>Comment:</strong></label>
-            {{ form.comment }}
+          <div class="card-body">
+            <form method="post" action="">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                <label for="{{ form.rating.id_for_label }}"><strong>Rating:</strong></label>
+                {{ form.rating }}
+              </div>
+              <div class="form-group mb-3">
+                <label for="{{ form.comment.id_for_label }}"><strong>Comment:</strong></label>
+                {{ form.comment }}
+              </div>
+              <div class="mt-3">
+                <button type="submit" class="btn btn-uni-blue">{% if is_edit %}Update{% else %}Submit{% endif %} Review</button>
+                <a href="{% url 'GUTors:review' %}" class="btn btn-outline-uni-blue ml-2">Cancel</a>
+              </div>
+            </form>
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-uni-blue">{% if is_edit %}Update{% else %}Submit{% endif %} Review</button>
-            <a href="{% url 'GUTors:profile' session.tutor.user.username %}" class="btn btn-outline-uni-blue">Cancel</a>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   {% else %}
-    <!-- List of all sessions -->
-    <h1 class="text-center mb-4">My Bookings</h1>
-
-    {% for session in sessions %}
-      <!-- Include session card with custom actions block for each session -->
-      {% include "GUTors_app/session_card.html" with session=session actions=True %}
-    {% empty %}
-      <div class="alert alert-warning">
-        You haven't attended any sessions yet.
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header bg-uni-blue">
+            <h3 class="mb-0">My Bookings</h3>
+          </div>
+          <div class="card-body">
+            {% for session in sessions %}
+              <div class="mb-4">
+                {% include "GUTors_app/session_card.html" with session=session actions=True reviewed_sessions=reviewed_sessions %}
+              </div>
+            {% empty %}
+              <div class="alert alert-info">
+                You haven't attended any sessions yet.
+              </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-    {% endfor %}
+    </div>
     
-    <h2 class="mb-4">Your Reviews</h2>
-    {% with review_title="Your Reviews" review_list=reviews %}
-      {% include "GUTors_app/review_display.html" %}
-    {% endwith %}
+    <div class="row">
+      <div class="col-12">
+        {% with review_title="Your Reviews" review_list=reviews %}
+          {% include "GUTors_app/review_display.html" %}
+        {% endwith %}
+      </div>
+    </div>
   {% endif %}
 </div>
+<script src="{% static 'GUTors_app/js/sessionActions.js' %}"></script>
 {% endblock %}

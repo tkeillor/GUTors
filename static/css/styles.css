@@ -211,6 +211,37 @@ h2 {
     border-bottom: none;
 }
 
+/* Radio styling*/
+.radio-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 6px;
+    width: auto;
+    margin-bottom: 0;
+}
+
+.radio-item label {
+    margin-bottom: 0;
+    font-weight: normal;
+    color: #333;
+}
+
+
 /* Checkbox styling */
 .checkbox-container {
     display: flex;
@@ -264,6 +295,7 @@ textarea.form-control {
     background-color: #fff;
     color: #333;
 }
+
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {

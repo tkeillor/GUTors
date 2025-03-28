@@ -34,16 +34,23 @@ class ReviewForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     username = forms.CharField(
-        required = False,
-        widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter tutor username'})
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter tutor username'})
     )
 
     subject = forms.ModelChoiceField(
-         queryset = Subject.objects.all(),
-         empty_label="Select a subject",
-         required = False,
-         widget= forms.Select(attrs={'class': 'form-control'})
-     )
+        queryset=Subject.objects.all(),
+        empty_label="Select a subject",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    search_type = forms.ChoiceField(
+        choices=[('tutors', 'Search for Tutors'), ('sessions', 'Search for Sessions')],
+        initial='tutors',
+        widget=forms.RadioSelect()
+    )
+    
 
 class CreateSessionForm(forms.ModelForm):
 
