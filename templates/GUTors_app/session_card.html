@@ -1,3 +1,6 @@
+
+{% load static %}
+<script src="{% static 'js/bookSession.js' %}"></script>
 <div class="card mb-4">
     <div class="card-header bg-uni-blue">
         <h3 class="mb-0">{{ session.subject.name }} with {{ session.tutor.user.username }}</h3>
@@ -20,7 +23,7 @@
                 {% if actions %}
                 <div class="session-actions mt-3" 
                      data-session-id="{{ session.id }}" 
-                     data-is-reviewed="{{ session.id in reviewed_sessions|yesno:'true,false' }}" 
+                     data-is-reviewed="{% if session.id in reviewed_sessions %}true{% else %}false{% endif %}"
                      data-review-url="{% url 'GUTors:review_session' session.id %}">
                     <!-- This div will be populated by JavaScript -->
                 </div>
@@ -28,4 +31,5 @@
             </div>
         </div>
     </div>
+    
 </div>

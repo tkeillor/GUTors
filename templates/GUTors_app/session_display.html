@@ -1,14 +1,14 @@
+<!-- session_display.html -->
 <h4>{{ session_title }}</h4>
 {% if session_list %}
     <div class="sessions-container">
-        
         {% for session in session_list %}
             <div class="card mb-4">
                 <div class="card-header bg-uni-blue">
                     <h3 class="mb-0">
                         {% if user_profile.role == 'TUTOR' %}
                             {{ session.subject.name }}
-                            {% if session.student %}with {{ session.student.user.username }}{% else %}(Available){% endif %}
+                            {% if session.student %}with {{ session.student }}{% else %}(Available){% endif %}
                         {% else %}
                             {{ session.subject.name }} with {{ session.tutor.user.username }}
                         {% endif %}
@@ -32,10 +32,6 @@
                     </div>
                     <div class="mt-3">
                         <a href="{% url 'GUTors:session' session.id %}" class="btn btn-outline-uni-blue">View Session</a>
-                        
-                        {% if not user_profile.role == 'TUTOR' and not session.student and user.is_authenticated and user.userprofile.role == 'STUDENT' %}
-                            <button class="btn btn-uni-blue book-session-btn" data-session-id="{{ session.id }}">Book This Session</button>
-                        {% endif %}
                     </div>
                 </div>
             </div>
