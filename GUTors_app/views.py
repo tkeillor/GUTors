@@ -45,12 +45,10 @@ class ProfileView(View):
             sessions = TutoringSession.objects.filter(student=user_profile)
             reviews = Review.objects.filter(session__student=user_profile)
         
-        print(f"Sessions: {sessions.count()}")
-        print(f"Reviews: {reviews.count()}")
 
         avg_rating = reviews.aggregate(avg=Avg("rating"))["avg"] or 0
         subjects = user_profile.subjects.all()
-        print(f"Subjects for {user_profile.user.username}: {list(subjects)}")
+
         
         context_dict = {
             'user_profile': user_profile,
@@ -123,8 +121,7 @@ def register_profile(request):
                 form.save()
                 
             return redirect('GUTors:profile', user_profile.user.username)
-        else:
-            print(form.errors)
+
     else:
         if is_edit:
             form = UserProfileForm(instance=user_profile)
